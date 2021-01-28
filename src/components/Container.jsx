@@ -8,8 +8,11 @@ const Container = styled.div`
   width: 50%;
   min-height: 600px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
   box-shadow: 10px 10px 30px grey;
+  padding: 2%;
+  margin: 2%;
 `;
 export default Container;

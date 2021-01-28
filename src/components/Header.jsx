@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import DeleteIcon from "./icons/DeleteIcon";
 
 const Header = () => (
   <div className="header">
