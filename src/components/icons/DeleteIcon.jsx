@@ -9,5 +9,7 @@ const DeleteIconContainer = styled.img`
 DeleteIconContainer.defaultProps = {
   height: 25,
 };
-const DeleteIcon = () => <DeleteIconContainer src={deleteIcon} />;
+const DeleteIcon = (props) => (
+  <DeleteIconContainer src={deleteIcon} onClick={props.delete} />
+);
 export default DeleteIcon;

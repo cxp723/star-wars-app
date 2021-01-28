@@ -30,15 +30,19 @@ const CardDescription = styled.div`
   }
   align-self: flex-start;
 `;
-const Card = ({ film }) => (
+const Card = ({ film, deleteFilm }) => (
   <CardContainer>
-    <CardImage src={posters[film.episode_id]} />
+    <CardImage src={posters[film.episode_id] || posters.noImage} />
     <CardDescription>
       <h2>{film.title}</h2>
       <p>Director: {film.director}</p>
       <p>Producer: {film.producer}</p>
     </CardDescription>
-    <DeleteIcon />
+    <DeleteIcon
+      delete={() => {
+        deleteFilm(film.episode_id);
+      }}
+    />
   </CardContainer>
 );
 

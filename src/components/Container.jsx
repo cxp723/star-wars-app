@@ -6,10 +6,10 @@ const Container = styled.div`
   border-radius: 10px;
   min-width: 300px;
   width: 50%;
-  min-height: 600px;
+  min-height: 500px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: stretch;
   align-items: center;
   box-shadow: 10px 10px 30px grey;
   padding: 2%;
