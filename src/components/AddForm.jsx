@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const FormContainer = styled.form`
   display: flex;
@@ -40,6 +41,13 @@ const AddForm = React.memo(({ addFunc, title, fields }) => {
       key={field}
     />
   ));
+
+  AddForm.propTypes = {
+    addFunc: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+    fields: PropTypes.arrayOf(PropTypes.string).isRequired,
+  };
+
   return (
     <FormContainer onSubmit={submitHandler} rows={fields.length}>
       <h1>{title}</h1>

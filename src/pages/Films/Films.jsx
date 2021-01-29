@@ -62,7 +62,7 @@ const Films = ({
     </Container>
   );
 };
-Films.propType = {
+Films.propTypes = {
   films: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string.isRequired,

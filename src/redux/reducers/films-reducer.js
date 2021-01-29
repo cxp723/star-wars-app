@@ -69,7 +69,10 @@ export const filmsReducer = (state = initialState, action) => {
     case ADD_FILM:
       return {
         ...state,
-        films: [...state.films, { ...action.film, episode_id: new Date() }],
+        films: [
+          ...state.films,
+          { ...action.film, episode_id: new Date().getTime() },
+        ],
       };
     case ADD_INFO:
       return {

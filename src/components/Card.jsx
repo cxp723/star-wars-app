@@ -2,6 +2,7 @@ import styled from "styled-components";
 import DeleteIcon from "./icons/DeleteIcon";
 import React, { useEffect } from "react";
 import Preloader from "./Preloader";
+import PropTypes from "prop-types";
 
 const CardContainer = styled.div`
   margin: 15px;
@@ -75,5 +76,14 @@ const Card = React.memo(
     );
   }
 );
-
+Card.propTypes = {
+  image: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  url: PropTypes.string.isRequired,
+  description: PropTypes.object.isRequired,
+  deleteFunc: PropTypes.func,
+  isFetchingFilmsInfo: PropTypes.arrayOf(PropTypes.number),
+  getInfo: PropTypes.func,
+};
 export default Card;
