@@ -55,7 +55,6 @@ export const filmsReducer = (state = initialState, action) => {
     case SET_FILMS:
       return { ...state, ...action.payload };
     case TOGGLE_FETCHING_FILM_INFO:
-      console.log(state.isFetchingFilmsInfo);
       return {
         ...state,
         isFetchingFilmsInfo: state.isFetchingFilmsInfo.includes(action.filmId)
@@ -102,11 +101,11 @@ export const getFilms = () => {
   };
 };
 
-export const getFilmInfo = (film) => {
+export const getFilmInfo = (id, url) => {
   return async (dispatch) => {
-    dispatch(toggleFetchingFilmInfo(film.episode_id));
-    const filmInfo = await getFilmInfoFromServer(film.url);
+    dispatch(toggleFetchingFilmInfo(id));
+    const filmInfo = await getFilmInfoFromServer(url);
     dispatch(addInfo(filmInfo));
-    dispatch(toggleFetchingFilmInfo(film.episode_id));
+    dispatch(toggleFetchingFilmInfo(id));
   };
 };

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import posters from "./../assets/images/posters";
 import DeleteIcon from "./icons/DeleteIcon";
 import React, { useEffect } from "react";
 import Preloader from "./Preloader";
@@ -31,36 +30,50 @@ const CardDescription = styled.div`
   }
   align-self: flex-start;
 `;
-const Card = ({ film, deleteFilm, isFetchingFilmsInfo, getInfo }) => {
-  function useInfo(getInfo) {
-    useEffect(() => {
-      if (film.url) getInfo(film);
-    }, []);
+const Card = React.memo(
+  ({
+    image,
+    title,
+    id,
+    url,
+    description,
+    deleteFunc,
+    isFetchingFilmsInfo,
+    getInfo,
+  }) => {
+    const isFetchedFilm = !!url;
+
+    function useInfo(getInfo, isFetched) {
+      useEffect(() => {
+        if (isFetched) getInfo(id, url);
+      }, []);
+    }
+
+    useInfo(getInfo, isFetchedFilm);
+
+    const isFetching = isFetchingFilmsInfo.includes(id);
+    const info = Object.keys(description).map((item) => (
+      <p key={item}>
+        {item[0].toUpperCase() + item.slice(1)}:{" "}
+        {isFetching ? <Preloader height="15" /> : description[item]}
+      </p>
+    ));
+
+    return (
+      <CardContainer>
+        <CardImage src={image} />
+        <CardDescription>
+          <h2>{title}</h2>
+          {info}
+        </CardDescription>
+        <DeleteIcon
+          delete={() => {
+            deleteFunc(id);
+          }}
+        />
+      </CardContainer>
+    );
   }
-
-  useInfo(getInfo);
-
-  const isFetching = isFetchingFilmsInfo.includes(film.episode_id);
-
-  return (
-    <CardContainer>
-      <CardImage src={posters[film.episode_id] || posters.noImage} />
-      <CardDescription>
-        <h2>{film.title}</h2>
-        <p>
-          Director: {isFetching ? <Preloader height="15" /> : film.director}
-        </p>
-        <p>
-          Producer: {isFetching ? <Preloader height="15" /> : film.producer}
-        </p>
-      </CardDescription>
-      <DeleteIcon
-        delete={() => {
-          deleteFilm(film.episode_id);
-        }}
-      />
-    </CardContainer>
-  );
-};
+);
 
 export default Card;
