@@ -3,12 +3,12 @@ import { getFilmsFromServer, getFilmInfoFromServer } from "./../../api/api";
 const initialState = {
   films: [],
   isFetchingFilms: false,
-  isFetchingFilmsInfo: false,
+  isFetchingFilmsInfo: [],
 };
 //ActionCreators
 const SET_IS_FETCHING_FILMS = "FILMS/SET_IS_FETCHING";
 
-const SET_IS_FETCHING_FILMS_INFO = "FILMS/SET_IS_FETCHING";
+const TOGGLE_FETCHING_FILM_INFO = "FILMS/TOGGLE_FETCHING_FILM_INFO";
 
 const SET_FILMS = "FILMS/SET_FILMS";
 
@@ -23,9 +23,9 @@ const setIsFetchingFilms = (isFetchingFilms) => ({
   payload: { isFetchingFilms },
 });
 
-const setIsFetchingFilmsInfo = (isFetchingFilmsInfo) => ({
-  type: SET_IS_FETCHING_FILMS,
-  payload: { isFetchingFilmsInfo },
+const toggleFetchingFilmInfo = (filmId) => ({
+  type: TOGGLE_FETCHING_FILM_INFO,
+  filmId: filmId,
 });
 
 const setFilms = (films) => ({
@@ -52,9 +52,16 @@ export const deleteFilm = (id) => ({
 export const filmsReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_IS_FETCHING_FILMS:
-    case SET_IS_FETCHING_FILMS_INFO:
     case SET_FILMS:
       return { ...state, ...action.payload };
+    case TOGGLE_FETCHING_FILM_INFO:
+      console.log(state.isFetchingFilmsInfo);
+      return {
+        ...state,
+        isFetchingFilmsInfo: state.isFetchingFilmsInfo.includes(action.filmId)
+          ? state.isFetchingFilmsInfo.filter((id) => id !== action.filmId)
+          : state.isFetchingFilmsInfo.concat(action.filmId),
+      };
     case DELETE_FILM:
       return {
         ...state,
@@ -95,11 +102,11 @@ export const getFilms = () => {
   };
 };
 
-export const getFilmInfo = (filmUrl) => {
+export const getFilmInfo = (film) => {
   return async (dispatch) => {
-    dispatch(setIsFetchingFilmsInfo(true));
-    const film = await getFilmInfoFromServer(filmUrl);
-    dispatch(addInfo(film));
-    dispatch(setIsFetchingFilmsInfo(false));
+    dispatch(toggleFetchingFilmInfo(film.episode_id));
+    const filmInfo = await getFilmInfoFromServer(film.url);
+    dispatch(addInfo(filmInfo));
+    dispatch(toggleFetchingFilmInfo(film.episode_id));
   };
 };

@@ -34,22 +34,24 @@ const CardDescription = styled.div`
 const Card = ({ film, deleteFilm, isFetchingFilmsInfo, getInfo }) => {
   function useInfo(getInfo) {
     useEffect(() => {
-      if (film.url) getInfo(film.url);
+      if (film.url) getInfo(film);
     }, []);
   }
+
   useInfo(getInfo);
+
+  const isFetching = isFetchingFilmsInfo.includes(film.episode_id);
+
   return (
     <CardContainer>
       <CardImage src={posters[film.episode_id] || posters.noImage} />
       <CardDescription>
         <h2>{film.title}</h2>
         <p>
-          Director:{" "}
-          {isFetchingFilmsInfo ? <Preloader height="15" /> : film.director}
+          Director: {isFetching ? <Preloader height="15" /> : film.director}
         </p>
         <p>
-          Producer:{" "}
-          {isFetchingFilmsInfo ? <Preloader height="15" /> : film.producer}{" "}
+          Producer: {isFetching ? <Preloader height="15" /> : film.producer}
         </p>
       </CardDescription>
       <DeleteIcon
