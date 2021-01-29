@@ -49,15 +49,15 @@ const Films = ({
       {isFetchingFilms ? (
         <Preloader />
       ) : (
-        <div>
-          <h1>Films:</h1>
+        <>
+          {films.length > 0 ? <h1>Films:</h1> : null}
           {filmsList}
           <AddForm
             addFunc={addFilm}
-            title="Add your film:"
+            title="film"
             fields={["title", "director", "producer"]}
           />
-        </div>
+        </>
       )}
     </Container>
   );
