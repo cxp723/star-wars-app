@@ -1,11 +1,14 @@
 //InitialState
-import { getFilmsFromServer } from "./../../api/api";
+import { getFilmsFromServer, getFilmInfoFromServer } from "./../../api/api";
 const initialState = {
   films: [],
-  isFetching: false,
+  isFetchingFilms: false,
+  isFetchingFilmsInfo: false,
 };
 //ActionCreators
-const SET_IS_FETCHING = "FILMS/SET_IS_FETCHING";
+const SET_IS_FETCHING_FILMS = "FILMS/SET_IS_FETCHING";
+
+const SET_IS_FETCHING_FILMS_INFO = "FILMS/SET_IS_FETCHING";
 
 const SET_FILMS = "FILMS/SET_FILMS";
 
@@ -13,9 +16,16 @@ const DELETE_FILM = "FILMS/DELETE_FILM";
 
 const ADD_FILM = "FILMS/ADD_FILM";
 
-const setIsFetching = (isFetching) => ({
-  type: SET_IS_FETCHING,
-  payload: { isFetching },
+const ADD_INFO = "FILMS/ADD_INFO";
+
+const setIsFetchingFilms = (isFetchingFilms) => ({
+  type: SET_IS_FETCHING_FILMS,
+  payload: { isFetchingFilms },
+});
+
+const setIsFetchingFilmsInfo = (isFetchingFilmsInfo) => ({
+  type: SET_IS_FETCHING_FILMS,
+  payload: { isFetchingFilmsInfo },
 });
 
 const setFilms = (films) => ({
@@ -28,6 +38,11 @@ export const addFilm = (film) => ({
   film,
 });
 
+const addInfo = (film) => ({
+  type: ADD_INFO,
+  film,
+});
+
 export const deleteFilm = (id) => ({
   type: DELETE_FILM,
   id,
@@ -36,7 +51,8 @@ export const deleteFilm = (id) => ({
 //Reducer
 export const filmsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_IS_FETCHING:
+    case SET_IS_FETCHING_FILMS:
+    case SET_IS_FETCHING_FILMS_INFO:
     case SET_FILMS:
       return { ...state, ...action.payload };
     case DELETE_FILM:
@@ -45,10 +61,16 @@ export const filmsReducer = (state = initialState, action) => {
         films: state.films.filter((film) => film.episode_id !== action.id),
       };
     case ADD_FILM:
-      debugger;
       return {
         ...state,
         films: [...state.films, { ...action.film, episode_id: new Date() }],
+      };
+    case ADD_INFO:
+      return {
+        ...state,
+        films: state.films.map((film) =>
+          film.episode_id === action.film.episode_id ? action.film : film
+        ),
       };
     default:
       return state;
@@ -58,16 +80,26 @@ export const filmsReducer = (state = initialState, action) => {
 //Thunks
 export const getFilms = () => {
   return async (dispatch) => {
-    dispatch(setIsFetching(true));
+    dispatch(setIsFetchingFilms(true));
     const films = await getFilmsFromServer();
     dispatch(
       setFilms(
         films.map((film) => ({
           title: film.title,
           episode_id: film.episode_id,
+          url: film.url,
         }))
       )
     );
-    dispatch(setIsFetching(false));
+    dispatch(setIsFetchingFilms(false));
+  };
+};
+
+export const getFilmInfo = (filmUrl) => {
+  return async (dispatch) => {
+    dispatch(setIsFetchingFilmsInfo(true));
+    const film = await getFilmInfoFromServer(filmUrl);
+    dispatch(addInfo(film));
+    dispatch(setIsFetchingFilmsInfo(false));
   };
 };

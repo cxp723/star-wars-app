@@ -26,7 +26,6 @@ const AddFilmForm = (props) => {
   const submitHandler = (e) => {
     e.preventDefault();
     props.addFilm(values);
-    debugger;
     setValues({ title: "", director: "", producer: "" });
   };
   return (

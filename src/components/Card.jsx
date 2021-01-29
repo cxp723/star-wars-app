@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import posters from "./../assets/images/posters";
 import DeleteIcon from "./icons/DeleteIcon";
-import React from "react";
+import React, { useEffect } from "react";
+import Preloader from "./Preloader";
 
 const CardContainer = styled.div`
   margin: 15px;
@@ -30,20 +31,34 @@ const CardDescription = styled.div`
   }
   align-self: flex-start;
 `;
-const Card = ({ film, deleteFilm }) => (
-  <CardContainer>
-    <CardImage src={posters[film.episode_id] || posters.noImage} />
-    <CardDescription>
-      <h2>{film.title}</h2>
-      <p>Director: {film.director}</p>
-      <p>Producer: {film.producer}</p>
-    </CardDescription>
-    <DeleteIcon
-      delete={() => {
-        deleteFilm(film.episode_id);
-      }}
-    />
-  </CardContainer>
-);
+const Card = ({ film, deleteFilm, isFetchingFilmsInfo, getInfo }) => {
+  function useInfo(getInfo) {
+    useEffect(() => {
+      if (film.url) getInfo(film.url);
+    }, []);
+  }
+  useInfo(getInfo);
+  return (
+    <CardContainer>
+      <CardImage src={posters[film.episode_id] || posters.noImage} />
+      <CardDescription>
+        <h2>{film.title}</h2>
+        <p>
+          Director:{" "}
+          {isFetchingFilmsInfo ? <Preloader height="15" /> : film.director}
+        </p>
+        <p>
+          Producer:{" "}
+          {isFetchingFilmsInfo ? <Preloader height="15" /> : film.producer}{" "}
+        </p>
+      </CardDescription>
+      <DeleteIcon
+        delete={() => {
+          deleteFilm(film.episode_id);
+        }}
+      />
+    </CardContainer>
+  );
+};
 
 export default Card;
