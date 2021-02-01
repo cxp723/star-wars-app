@@ -34,9 +34,10 @@ const toggleFetchingFilmInfo = (title) => ({
   title,
 });
 
-const setFilms = (films) => ({
+const setFilms = (films, count) => ({
   type: SET_FILMS,
-  payload: { films },
+  films,
+  count,
 });
 
 export const addFilm = (film) => ({
@@ -58,8 +59,9 @@ export const deleteFilm = (title) => ({
 export const filmsReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_IS_FETCHING_FILMS:
-    case SET_FILMS:
       return { ...state, ...action.payload };
+    case SET_FILMS:
+      return { ...state, films: action.films };
     case TOGGLE_FETCHING_FILM_INFO:
       const fetchingFilms = state.isFetchingFilmsInfo;
       return {

@@ -3,13 +3,13 @@ export const getItemsThunkCreator = (
   setMethod,
   toggleFetchingMethod
 ) => {
-  return () => {
+  return (page) => {
     return async (dispatch) => {
       dispatch(toggleFetchingMethod(true));
-      const items = await apiMethod();
+      const items = await apiMethod(page);
       dispatch(
         setMethod(
-          items.map((item) => {
+          items.results.map((item) => {
             if (item.title) {
               return {
                 title: item.title,
@@ -20,7 +20,8 @@ export const getItemsThunkCreator = (
                 name: item.name,
                 url: item.url,
               };
-          })
+          }),
+          items.count
         )
       );
       dispatch(toggleFetchingMethod(false));

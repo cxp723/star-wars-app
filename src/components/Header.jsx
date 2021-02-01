@@ -6,10 +6,10 @@ const Header = () => (
     <NavLink to="/films" activeClassName="active">
       Films
     </NavLink>
-    <NavLink to="/characters" activeClassName="active">
+    {/* <NavLink to="/characters" activeClassName="active">
       Characters
-    </NavLink>
-    <NavLink to="/planets" activeClassName="active">
+    </NavLink> */}
+    <NavLink to="/planets?page=1" activeClassName="active">
       Planets
     </NavLink>
   </div>

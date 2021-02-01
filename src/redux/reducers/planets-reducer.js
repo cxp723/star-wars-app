@@ -6,6 +6,8 @@ import {
 } from "./helpers/actionCreators";
 
 const initialState = {
+  pageSize: 10,
+  planetsTotalCount: null,
   planets: [],
   isFetchingPlanets: false,
   isFetchingPlanetsInfo: [],
@@ -29,14 +31,20 @@ const setIsFetchingPlanets = (isFetchingPlanets) => ({
   payload: { isFetchingPlanets },
 });
 
+export const setCurrentPage = (currentPage) => ({
+  type: SET_CURRENT_PAGE,
+  payload: { currentPage },
+});
+
 const toggleFetchingPlanetInfo = (planetId) => ({
   type: TOGGLE_FETCHING_PLANET_INFO,
   planetId,
 });
 
-const setPlanets = (planets) => ({
+const setPlanets = (planets, count) => ({
   type: SET_PLANETS,
-  payload: { planets },
+  planets,
+  count,
 });
 
 export const addPlanet = (planet) => ({
@@ -58,8 +66,13 @@ export const deletePlanet = (name) => ({
 export const planetsReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_IS_FETCHING_PLANETS:
-    case SET_PLANETS:
       return { ...state, ...action.payload };
+    case SET_PLANETS:
+      return {
+        ...state,
+        planets: action.planets,
+        planetsTotalCount: action.count,
+      };
     case TOGGLE_FETCHING_PLANET_INFO:
       const fetchingPlanets = state.isFetchingPlanetsInfo;
       return {
