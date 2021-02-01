@@ -9,7 +9,8 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const isDev = process.env.NODE_ENV === "development";
 const isProd = !isDev;
 
-const filename = (ext) => (isDev ? `[name].${ext}` : `[name].[hash].${ext}`);
+const filename = (ext) =>
+  isDev ? `[name].${ext}` : `[name].[fullhash].${ext}`;
 
 function optimize() {
   const config = {

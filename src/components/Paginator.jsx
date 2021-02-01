@@ -33,7 +33,7 @@ const Paginator = ({ totalCount, pageSize, currentPage, onPageSelect }) => {
   for (let i = startPage; i <= lastPage; i++) {
     pages.push(
       <PageButton
-        className={i === Number(currentPage) && "selectedPage"}
+        className={i === currentPage && "selectedPage"}
         key={i}
         onClick={() => {
           onPageSelect(i);
