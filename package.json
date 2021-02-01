@@ -1,4 +1,5 @@
 {
+  "homepage": "http://cxp723.github.io/star-wars-app",
   "name": "star-wars-app",
   "version": "1.0.0",
   "description": "testing how to use webpack",
@@ -7,7 +8,9 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --mode development",
     "build": "cross-env NODE_ENV=production webpack --mode production",
-    "start": "cross-env NODE_ENV=development webpack serve"
+    "start": "cross-env NODE_ENV=development webpack serve",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "author": "cxp723",
   "license": "ISC",
@@ -22,6 +25,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^5.0.1",
     "file-loader": "^6.2.0",
+    "gh-pages": "^3.1.0",
     "html-webpack-plugin": "^4.5.1",
     "mini-css-extract-plugin": "^1.3.4",
     "optimize-css-assets-webpack-plugin": "^5.0.4",
