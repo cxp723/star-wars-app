@@ -35,24 +35,23 @@ const Card = React.memo(
   ({
     image,
     title,
-    id,
     url,
     description,
     deleteFunc,
-    isFetchingFilmsInfo,
+    isFetchingItemsInfo,
     getInfo,
   }) => {
     const isFetchedFilm = !!url;
 
     function useInfo(getInfo, isFetched) {
       useEffect(() => {
-        if (isFetched) getInfo(id, url);
+        if (isFetched) getInfo(title, url);
       }, []);
     }
 
     useInfo(getInfo, isFetchedFilm);
 
-    const isFetching = isFetchingFilmsInfo.includes(id);
+    const isFetching = isFetchingItemsInfo.includes(title);
     const info = Object.keys(description).map((item) => (
       <p key={item}>
         {item[0].toUpperCase() + item.slice(1)}:{" "}
@@ -69,7 +68,7 @@ const Card = React.memo(
         </CardDescription>
         <DeleteIcon
           delete={() => {
-            deleteFunc(id);
+            deleteFunc(title);
           }}
         />
       </CardContainer>
@@ -79,11 +78,10 @@ const Card = React.memo(
 Card.propTypes = {
   image: PropTypes.string,
   title: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
   url: PropTypes.string.isRequired,
   description: PropTypes.object.isRequired,
   deleteFunc: PropTypes.func,
-  isFetchingFilmsInfo: PropTypes.arrayOf(PropTypes.number),
+  isFetchingItemsInfo: PropTypes.arrayOf(PropTypes.string),
   getInfo: PropTypes.func,
 };
 export default Card;

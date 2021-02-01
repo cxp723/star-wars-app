@@ -1,10 +1,16 @@
 //InitialState
 import { getFilmsFromServer, getFilmInfoFromServer } from "./../../api/api";
+import {
+  getItemsThunkCreator,
+  getItemInfoThunkCreator,
+} from "./helpers/actionCreators";
+
 const initialState = {
   films: [],
   isFetchingFilms: false,
   isFetchingFilmsInfo: [],
 };
+
 //ActionCreators
 const SET_IS_FETCHING_FILMS = "FILMS/SET_IS_FETCHING";
 
@@ -16,16 +22,16 @@ const DELETE_FILM = "FILMS/DELETE_FILM";
 
 const ADD_FILM = "FILMS/ADD_FILM";
 
-const ADD_INFO = "FILMS/ADD_INFO";
+const ADD_FILM_INFO = "FILMS/ADD_INFO";
 
 const setIsFetchingFilms = (isFetchingFilms) => ({
   type: SET_IS_FETCHING_FILMS,
   payload: { isFetchingFilms },
 });
 
-const toggleFetchingFilmInfo = (filmId) => ({
+const toggleFetchingFilmInfo = (title) => ({
   type: TOGGLE_FETCHING_FILM_INFO,
-  filmId: filmId,
+  title,
 });
 
 const setFilms = (films) => ({
@@ -38,14 +44,14 @@ export const addFilm = (film) => ({
   film,
 });
 
-const addInfo = (film) => ({
-  type: ADD_INFO,
+const addFilmInfo = (film) => ({
+  type: ADD_FILM_INFO,
   film,
 });
 
-export const deleteFilm = (id) => ({
+export const deleteFilm = (title) => ({
   type: DELETE_FILM,
-  id,
+  title,
 });
 
 //Reducer
@@ -55,30 +61,28 @@ export const filmsReducer = (state = initialState, action) => {
     case SET_FILMS:
       return { ...state, ...action.payload };
     case TOGGLE_FETCHING_FILM_INFO:
+      const fetchingFilms = state.isFetchingFilmsInfo;
       return {
         ...state,
-        isFetchingFilmsInfo: state.isFetchingFilmsInfo.includes(action.filmId)
-          ? state.isFetchingFilmsInfo.filter((id) => id !== action.filmId)
-          : state.isFetchingFilmsInfo.concat(action.filmId),
+        isFetchingFilmsInfo: fetchingFilms.includes(action.title)
+          ? fetchingFilms.filter((title) => title !== action.title)
+          : fetchingFilms.concat(action.title),
       };
     case DELETE_FILM:
       return {
         ...state,
-        films: state.films.filter((film) => film.episode_id !== action.id),
+        films: state.films.filter((film) => film.title !== action.title),
       };
     case ADD_FILM:
       return {
         ...state,
-        films: [
-          ...state.films,
-          { ...action.film, episode_id: new Date().getTime() },
-        ],
+        films: [...state.films, action.film],
       };
-    case ADD_INFO:
+    case ADD_FILM_INFO:
       return {
         ...state,
         films: state.films.map((film) =>
-          film.episode_id === action.film.episode_id ? action.film : film
+          film.title === action.film.title ? action.film : film
         ),
       };
     default:
@@ -87,28 +91,15 @@ export const filmsReducer = (state = initialState, action) => {
 };
 
 //Thunks
-export const getFilms = () => {
-  return async (dispatch) => {
-    dispatch(setIsFetchingFilms(true));
-    const films = await getFilmsFromServer();
-    dispatch(
-      setFilms(
-        films.map((film) => ({
-          title: film.title,
-          episode_id: film.episode_id,
-          url: film.url,
-        }))
-      )
-    );
-    dispatch(setIsFetchingFilms(false));
-  };
-};
 
-export const getFilmInfo = (id, url) => {
-  return async (dispatch) => {
-    dispatch(toggleFetchingFilmInfo(id));
-    const filmInfo = await getFilmInfoFromServer(url);
-    dispatch(addInfo(filmInfo));
-    dispatch(toggleFetchingFilmInfo(id));
-  };
-};
+export const getFilms = getItemsThunkCreator(
+  getFilmsFromServer,
+  setFilms,
+  setIsFetchingFilms
+);
+
+export const getFilmInfo = getItemInfoThunkCreator(
+  getFilmInfoFromServer,
+  addFilmInfo,
+  toggleFetchingFilmInfo
+);

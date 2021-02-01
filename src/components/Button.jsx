@@ -10,6 +10,7 @@ const Button = styled.button`
   font-weight: bold;
   flex: 1;
   margin: 0 5px;
+  cursor: pointer;
 `;
 
 export default Button;

@@ -100,7 +100,7 @@ module.exports = {
         test: /\.(sass|scss)$/,
         use: cssLoaders("sass-loader"),
       },
-      { test: /\.(png|jpg|svg|gif)$/, use: ["file-loader"] },
+      { test: /\.(png|jpg|svg|gif|jpeg)$/, use: ["file-loader"] },
       { test: /\.(ttf|woff|woff2|eot)$/, use: ["file-loader"] },
     ],
   },

@@ -39,9 +39,12 @@ const AddForm = React.memo(({ addFunc, title, fields }) => {
       onSubmit={addFunc}
       validate={(values) => {
         let errors = {};
+        if (values.diameter && isNaN(Number(values.diameter))) {
+          errors.diameter = "Should be number";
+        }
         Object.keys(values).forEach((value) => {
           if (values[value].length < 3) {
-            errors[value] = "Should be at least 3 letters";
+            errors[value] = "Should be at least 3 symbols";
           }
         });
         return errors;

@@ -4,15 +4,15 @@ import img3 from "./3.jpg";
 import img4 from "./4.jpg";
 import img5 from "./5.jpg";
 import img6 from "./6.jpg";
-import noimg from "./noimg.jpg";
+import noimg from "../noimg.jpg";
 
 const posters = {
-  1: img1,
-  2: img2,
-  3: img3,
-  4: img4,
-  5: img5,
-  6: img6,
+  "The Phantom Menace": img1,
+  "Attack of the Clones": img2,
+  "Revenge of the Sith": img3,
+  "A New Hope": img4,
+  "The Empire Strikes Back": img5,
+  "Return of the Jedi": img6,
   noImage: noimg,
 };
 export default posters;

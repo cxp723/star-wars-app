@@ -11,7 +11,7 @@ import {
 } from "../../redux/reducers/films-reducer";
 import Card from "./../../components/Card";
 import PropTypes from "prop-types";
-import posters from "../../assets/images/posters";
+import posters from "../../assets/images/posters/posters";
 
 const Films = ({
   films,
@@ -28,10 +28,9 @@ const Films = ({
 
   const filmsList = films.map((film) => (
     <Card
-      image={posters[film.episode_id] || posters.noImage}
-      key={film.episode_id}
+      image={posters[film.title] || posters.noImage}
+      key={film.title}
       title={film.title}
-      id={film.episode_id}
       description={{
         director: film.director,
         producer: film.producer,
@@ -40,7 +39,7 @@ const Films = ({
       url={film.url || null}
       deleteFunc={deleteFilm}
       getInfo={getFilmInfo}
-      isFetchingFilmsInfo={isFetchingFilmsInfo}
+      isFetchingItemsInfo={isFetchingFilmsInfo}
     />
   ));
 
@@ -66,14 +65,13 @@ Films.propTypes = {
   films: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string.isRequired,
-      episode_id: PropTypes.number.isRequired,
       url: PropTypes.string,
       director: PropTypes.string,
       producer: PropTypes.string,
     })
   ),
   isFetchingFilms: PropTypes.bool.isRequired,
-  isFetchingFilmsInfo: PropTypes.arrayOf(PropTypes.number),
+  isFetchingFilmsInfo: PropTypes.arrayOf(PropTypes.string),
   getFilms: PropTypes.func,
   deleteFilm: PropTypes.func,
   addFilm: PropTypes.func,
