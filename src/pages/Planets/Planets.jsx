@@ -66,7 +66,7 @@ const Planets = ({
         <>
           {planets.length > 0 ? <h1>Planets:</h1> : null}
           {planetsList}
-          {planetsTotalCount > 10 && (
+          {planetsTotalCount > pageSize && (
             <Paginator
               currentPage={Number(currentPage)}
               totalCount={planetsTotalCount}

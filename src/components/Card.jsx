@@ -43,9 +43,9 @@ const Card = React.memo(
   }) => {
     const isFetchedFilm = !!url;
 
-    function useInfo(getInfo, isFetched) {
+    function useInfo(getInfoFunc, isFetched) {
       useEffect(() => {
-        if (isFetched) getInfo(title, url);
+        if (isFetched) getInfoFunc(title, url);
       }, []);
     }
 

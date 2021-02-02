@@ -22,52 +22,54 @@ const PaginatorContainer = styled.div`
   justify-content: center;
 `;
 
-const Paginator = ({ totalCount, pageSize, currentPage, onPageSelect }) => {
-  const pagesCount = Math.ceil(totalCount / pageSize);
-  const sectionSize = 3;
-  const sectionsCount = Math.ceil(pagesCount / sectionSize);
-  const currentSection = Math.ceil(currentPage / sectionSize);
-  const startPage = sectionSize * (currentSection - 1) + 1;
-  const lastPage = sectionSize * currentSection;
-  const pages = [];
-  for (let i = startPage; i <= lastPage; i++) {
-    pages.push(
-      <PageButton
-        className={i === currentPage && "selectedPage"}
-        key={i}
-        onClick={() => {
-          onPageSelect(i);
-        }}
-      >
-        {i}
-      </PageButton>
+const Paginator = React.memo(
+  ({ totalCount, pageSize, currentPage, onPageSelect }) => {
+    const pagesCount = Math.ceil(totalCount / pageSize);
+    const sectionSize = 3;
+    const sectionsCount = Math.ceil(pagesCount / sectionSize);
+    const currentSection = Math.ceil(currentPage / sectionSize);
+    const startPage = sectionSize * (currentSection - 1) + 1;
+    const lastPage = sectionSize * currentSection;
+    const pages = [];
+    for (let i = startPage; i <= lastPage; i++) {
+      pages.push(
+        <PageButton
+          className={i === currentPage && "selectedPage"}
+          key={i}
+          onClick={() => {
+            onPageSelect(i);
+          }}
+        >
+          {i}
+        </PageButton>
+      );
+    }
+
+    return (
+      <PaginatorContainer>
+        {currentSection > 1 && (
+          <PageButton
+            onClick={() => {
+              onPageSelect((currentSection - 1) * sectionSize);
+            }}
+          >
+            ←
+          </PageButton>
+        )}
+        {pages}
+        {currentSection < sectionsCount && (
+          <PageButton
+            onClick={() => {
+              onPageSelect(currentSection * sectionSize + 1);
+            }}
+          >
+            →
+          </PageButton>
+        )}
+      </PaginatorContainer>
     );
   }
-
-  return (
-    <PaginatorContainer>
-      {currentSection > 1 && (
-        <PageButton
-          onClick={() => {
-            onPageSelect((currentSection - 1) * sectionSize);
-          }}
-        >
-          ←
-        </PageButton>
-      )}
-      {pages}
-      {currentSection < sectionsCount && (
-        <PageButton
-          onClick={() => {
-            onPageSelect(currentSection * sectionSize + 1);
-          }}
-        >
-          →
-        </PageButton>
-      )}
-    </PaginatorContainer>
-  );
-};
+);
 
 Paginator.propTypes = {
   totalCount: PropTypes.number.isRequired,

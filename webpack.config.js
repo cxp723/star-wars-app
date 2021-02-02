@@ -101,8 +101,24 @@ module.exports = {
         test: /\.(sass|scss)$/,
         use: cssLoaders("sass-loader"),
       },
-      { test: /\.(png|jpg|svg|gif|jpeg)$/, use: ["file-loader"] },
-      { test: /\.(ttf|woff|woff2|eot)$/, use: ["file-loader"] },
+      {
+        test: /\.(png|jpg|svg|gif|jpeg)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: { name: "images/[name].[contenthash].[ext]" },
+          },
+        ],
+      },
+      {
+        test: /\.(ttf|woff|woff2|eot)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: { name: "fonts/[name].[contenthash].[ext]" },
+          },
+        ],
+      },
     ],
   },
   devServer: {
