@@ -8,7 +8,12 @@ const PreloaderContainer = styled.img`
 `;
 
 const Preloader = (props) => (
-  <PreloaderContainer src={preloader} alt="preloader" height={props.height} />
+  <PreloaderContainer
+    src={preloader}
+    alt="preloader"
+    height={props.height}
+    data-testid="preloader"
+  />
 );
 Preloader.defaultProps = { height: 40 };
 export default Preloader;

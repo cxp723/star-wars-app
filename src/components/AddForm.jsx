@@ -49,20 +49,26 @@ const AddForm = React.memo(({ addFunc, title, fields }) => {
         });
         return errors;
       }}
-      render={({ handleSubmit, pristine, form }) => (
-        <FormContainer onSubmit={handleSubmit} rows={fields.length}>
-          <h1>Add {title}:</h1>
-          {inputs}
-          <ButtonsContainer>
-            <Button type="submit" disabled={pristine} green>
-              Add
-            </Button>
-            <Button disabled={pristine} onClick={form.reset}>
-              Reset
-            </Button>
-          </ButtonsContainer>
-        </FormContainer>
-      )}
+      render={({ handleSubmit, pristine, form }) => {
+        const submitFunc = (values) => {
+          handleSubmit(values);
+          form.reset();
+        };
+        return (
+          <FormContainer onSubmit={submitFunc} rows={fields.length}>
+            <h1>Add {title}:</h1>
+            {inputs}
+            <ButtonsContainer>
+              <Button type="submit" disabled={pristine} green>
+                Add
+              </Button>
+              <Button disabled={pristine} onClick={form.reset}>
+                Reset
+              </Button>
+            </ButtonsContainer>
+          </FormContainer>
+        );
+      }}
     />
   );
 });
