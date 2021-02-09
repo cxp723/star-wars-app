@@ -3,13 +3,13 @@ import styled from "styled-components";
 const Button = styled.button`
   outline: none;
   border-radius: 5px;
-  background-color: ${(p) => (p.green ? "#7ef297" : "#f2997e")};
+  background-color: ${(p) =>
+    p.green ? "#7ef297" : p.red ? "#f2997e" : "#5da4f5"};
   color: white;
   font-size: 1.2em;
   padding: 10px;
   font-weight: bold;
-  flex: 1;
-  margin: 0 5px;
+  min-width: 150px;
   cursor: pointer;
 `;
 

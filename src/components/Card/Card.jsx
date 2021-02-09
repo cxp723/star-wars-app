@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import DeleteIcon from "./icons/DeleteIcon";
-import React, { useEffect } from "react";
-import Preloader from "./Preloader";
+import DeleteIcon from "../icons/DeleteIcon";
+import React, { useMemo } from "react";
+import Preloader from "../Preloader/Preloader";
 import PropTypes from "prop-types";
+import { useInfo } from "./getInfoHook";
 
 const CardContainer = styled.div`
   margin: 15px;
@@ -43,21 +44,19 @@ const Card = React.memo(
   }) => {
     const isFetchedFilm = !!url;
 
-    function useInfo(getInfoFunc, isFetched) {
-      useEffect(() => {
-        if (isFetched) getInfoFunc(title, url);
-      }, []);
-    }
-
-    useInfo(getInfo, isFetchedFilm);
+    useInfo(getInfo, isFetchedFilm, title, url);
 
     const isFetching = isFetchingItemsInfo.includes(title);
-    const info = Object.keys(description).map((item) => (
-      <p key={item}>
-        {item[0].toUpperCase() + item.slice(1)}:{" "}
-        {isFetching ? <Preloader height="15" /> : description[item]}
-      </p>
-    ));
+    const info = useMemo(
+      () =>
+        Object.keys(description).map((item) => (
+          <p key={item}>
+            {item[0].toUpperCase() + item.slice(1)}:{" "}
+            {isFetching ? <Preloader height="15" /> : description[item]}
+          </p>
+        )),
+      [{ ...description }]
+    );
 
     return (
       <CardContainer>
@@ -68,7 +67,7 @@ const Card = React.memo(
         </CardDescription>
         <DeleteIcon
           delete={() => {
-            deleteFunc(title);
+            deleteFunc({ title });
           }}
         />
       </CardContainer>
@@ -78,7 +77,7 @@ const Card = React.memo(
 Card.propTypes = {
   image: PropTypes.string,
   title: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired,
+  url: PropTypes.string,
   description: PropTypes.object.isRequired,
   deleteFunc: PropTypes.func,
   isFetchingItemsInfo: PropTypes.arrayOf(PropTypes.string),

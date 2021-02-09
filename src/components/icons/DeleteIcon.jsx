@@ -12,6 +12,7 @@ const DeleteIcon = (props) => (
   <DeleteIconContainer onClick={props.delete}>
     <svg
       height="100%"
+      fill="#383636"
       viewBox="-40 0 427 427.001"
       xmlns="http://www.w3.org/2000/svg"
     >

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React from "react";
-import preloader from "../assets/Preloader.gif";
+import preloader from "../../assets/Preloader.gif";
 
 const PreloaderContainer = styled.img`
   height: ${(p) => p.height}px;

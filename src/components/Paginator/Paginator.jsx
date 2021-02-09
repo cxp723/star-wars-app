@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -22,28 +22,45 @@ const PaginatorContainer = styled.div`
   justify-content: center;
 `;
 
+const calculatePaginatorParams = (totalCount, pageSize) => {
+  const pagesCount = Math.ceil(totalCount / pageSize);
+  const sectionSize = 3;
+  const sectionsCount = Math.ceil(pagesCount / sectionSize);
+  return {
+    sectionSize,
+    sectionsCount,
+  };
+};
+
 const Paginator = React.memo(
   ({ totalCount, pageSize, currentPage, onPageSelect }) => {
-    const pagesCount = Math.ceil(totalCount / pageSize);
-    const sectionSize = 3;
-    const sectionsCount = Math.ceil(pagesCount / sectionSize);
-    const currentSection = Math.ceil(currentPage / sectionSize);
-    const startPage = sectionSize * (currentSection - 1) + 1;
-    const lastPage = sectionSize * currentSection;
-    const pages = [];
-    for (let i = startPage; i <= lastPage; i++) {
-      pages.push(
-        <PageButton
-          className={i === currentPage && "selectedPage"}
-          key={i}
-          onClick={() => {
-            onPageSelect(i);
-          }}
-        >
-          {i}
-        </PageButton>
-      );
-    }
+    const { sectionSize, sectionsCount } = useMemo(
+      () => calculatePaginatorParams(totalCount, pageSize),
+      [totalCount, pageSize]
+    );
+    const currentSection = useMemo(() => Math.ceil(currentPage / sectionSize), [
+      currentPage,
+    ]);
+    const pages = useMemo(() => {
+      const pagesTemp = [];
+      const startPage = sectionSize * (currentSection - 1) + 1;
+      const lastPage = sectionSize * currentSection;
+
+      for (let i = startPage; i <= lastPage; i++) {
+        pagesTemp.push(
+          <PageButton
+            className={i === currentPage && "selectedPage"}
+            key={i}
+            onClick={() => {
+              onPageSelect(i);
+            }}
+          >
+            {i}
+          </PageButton>
+        );
+      }
+      return pagesTemp;
+    }, [currentSection, onPageSelect]);
 
     return (
       <PaginatorContainer>

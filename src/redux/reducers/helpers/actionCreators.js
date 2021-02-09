@@ -1,30 +1,37 @@
 export const getItemsThunkCreator = (
   apiMethod,
   setMethod,
-  toggleFetchingMethod
+  toggleFetchingMethod,
+  setErrorMethod
 ) => {
   return (page) => {
     return async (dispatch) => {
-      dispatch(toggleFetchingMethod(true));
-      const items = await apiMethod(page);
-      dispatch(
-        setMethod(
-          items.results.map((item) => {
-            if (item.title) {
-              return {
-                title: item.title,
-                url: item.url,
-              };
-            } else
-              return {
-                name: item.name,
-                url: item.url,
-              };
-          }),
-          items.count
-        )
-      );
-      dispatch(toggleFetchingMethod(false));
+      dispatch(toggleFetchingMethod({ isFetchingItems: true }));
+      try {
+        const items = await apiMethod(page);
+        if (items) {
+          dispatch(
+            setMethod({
+              items: items.results.map((item) => {
+                if (item.title) {
+                  return {
+                    title: item.title,
+                    url: item.url,
+                  };
+                } else
+                  return {
+                    name: item.name,
+                    url: item.url,
+                  };
+              }),
+              count: items.count,
+            })
+          );
+        }
+      } catch (e) {
+        dispatch(setErrorMethod({ fetchingDataError: e.toString() }));
+      }
+      dispatch(toggleFetchingMethod({ isFetchingItems: false }));
     };
   };
 };
@@ -34,12 +41,12 @@ export const getItemInfoThunkCreator = (
   addMethod,
   toggleFetchingMethod
 ) => {
-  return (id, url) => {
+  return (title, url) => {
     return async (dispatch) => {
-      dispatch(toggleFetchingMethod(id));
-      const filmInfo = await apiMethod(url);
-      dispatch(addMethod(filmInfo));
-      dispatch(toggleFetchingMethod(id));
+      dispatch(toggleFetchingMethod({ title }));
+      const itemInfo = await apiMethod(url);
+      dispatch(addMethod({ item: itemInfo }));
+      dispatch(toggleFetchingMethod({ title }));
     };
   };
 };

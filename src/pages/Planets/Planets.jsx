@@ -1,62 +1,73 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import AddForm from "../../components/AddForm";
-import Container from "../../components/Container";
-import Preloader from "../../components/Preloader";
+import React, { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import AddForm from "../../components/AddForm/AddForm";
+import Container from "../../components/Container/Container";
+import Preloader from "../../components/Preloader/Preloader";
 import {
   getPlanets,
   deletePlanet,
   getPlanetInfo,
   addPlanet,
-} from "../../redux/reducers/planets-reducer";
-import Card from "./../../components/Card";
-import PropTypes from "prop-types";
+} from "../../redux/reducers/planets-reducer/planets-actions";
+import Card from "../../components/Card/Card";
 import planetsImages from "../../assets/images/planets/planets-images";
-import Paginator from "../../components/Paginator";
+import Paginator from "../../components/Paginator/Paginator";
 import QueryString from "qs";
+import { planetsStateSelector } from "./../../redux/reducers/planets-reducer/planets-selectors";
 
-const Planets = ({
-  planets,
-  getPlanets,
-  isFetchingPlanets,
-  deletePlanet,
-  addPlanet,
-  planetsTotalCount,
-  pageSize,
-  getPlanetInfo,
-  isFetchingPlanetsInfo,
-  ...restProps
-}) => {
-  const currentPage = QueryString.parse(restProps.location.search, {
-    ignoreQueryPrefix: true,
-  }).page?.toString();
+const Planets = (routerProps) => {
+  const dispatch = useDispatch();
+  const {
+    planets,
+    isFetchingPlanets,
+    isFetchingPlanetsInfo,
+    planetsTotalCount,
+    pageSize,
+  } = useSelector(planetsStateSelector);
+  const deletePlanetFunc = (name) => dispatch(deletePlanet(name));
+  const getPlanetInfoFunc = (name, url) => dispatch(getPlanetInfo(name, url));
+  const addPlanetFunc = (planet) => dispatch(addPlanet(planet));
+  const getPlanetsFunc = (page) => dispatch(getPlanets(page));
+
+  const currentPage = useMemo(
+    () =>
+      QueryString.parse(routerProps.location.search, {
+        ignoreQueryPrefix: true,
+      }).page?.toString(),
+    [routerProps.location.search]
+  );
   if (!currentPage) {
-    restProps.history.push("/planets?page=1");
+    routerProps.history.push("/planets?page=1");
   }
+
   useEffect(() => {
-    getPlanets(currentPage);
-  }, [restProps.location.search]);
+    getPlanetsFunc(currentPage);
+  }, [routerProps.location.search]);
 
   const onPageChanged = (page) => {
-    restProps.history.push("/planets?page=" + page);
+    routerProps.history.push("/planets?page=" + page);
   };
 
-  const planetsList = planets.map((planet) => (
-    <Card
-      image={planetsImages[planet.name] || planetsImages.noImage}
-      key={planet.name}
-      title={planet.name}
-      description={{
-        diameter: planet.diameter,
-        climate: planet.climate,
-        gravity: planet.gravity,
-      }}
-      url={planet.url || null}
-      deleteFunc={deletePlanet}
-      getInfo={getPlanetInfo}
-      isFetchingItemsInfo={isFetchingPlanetsInfo}
-    />
-  ));
+  const planetsList = useMemo(
+    () =>
+      planets.map((planet) => (
+        <Card
+          image={planetsImages[planet.name] || planetsImages.noImage}
+          key={planet.name}
+          title={planet.name}
+          description={{
+            diameter: planet.diameter,
+            climate: planet.climate,
+            gravity: planet.gravity,
+          }}
+          url={planet.url || null}
+          deleteFunc={deletePlanetFunc}
+          isFetchingItemsInfo={isFetchingPlanetsInfo}
+          getInfo={getPlanetInfoFunc}
+        />
+      )),
+    [planets, isFetchingPlanetsInfo]
+  );
 
   return (
     <Container>
@@ -75,44 +86,14 @@ const Planets = ({
             />
           )}
           <AddForm
-            addFunc={addPlanet}
+            addFunc={addPlanetFunc}
             title="planet"
-            fields={["title", "diameter", "climate", "gravity"]}
+            fields={["name", "diameter", "climate", "gravity"]}
           />
         </>
       )}
     </Container>
   );
 };
-Planets.propTypes = {
-  planets: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      url: PropTypes.string,
-      diameter: PropTypes.string,
-      climate: PropTypes.string,
-      gravity: PropTypes.string,
-    })
-  ),
-  planetsTotalCount: PropTypes.number,
-  pageSize: PropTypes.number.isRequired,
-  isFetchingPlanets: PropTypes.bool.isRequired,
-  isFetchingPlanetsInfo: PropTypes.arrayOf(PropTypes.string),
-  getPlanets: PropTypes.func,
-  deletePlanet: PropTypes.func,
-  addPlanet: PropTypes.func,
-  getPlanetInfo: PropTypes.func,
-};
-const mapStateToProps = (state) => ({
-  planets: state.planetsPage.planets,
-  planetsTotalCount: state.planetsPage.planetsTotalCount,
-  pageSize: state.planetsPage.pageSize,
-  isFetchingPlanets: state.planetsPage.isFetchingPlanets,
-  isFetchingPlanetsInfo: state.planetsPage.isFetchingPlanetsInfo,
-});
-export default connect(mapStateToProps, {
-  getPlanets,
-  deletePlanet,
-  addPlanet,
-  getPlanetInfo,
-})(Planets);
+
+export default Planets;

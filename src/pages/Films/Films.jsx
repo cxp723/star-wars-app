@@ -1,17 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
-import AddForm from "../../components/AddForm";
-import Container from "../../components/Container";
-import Preloader from "../../components/Preloader";
-import {
-  getFilms,
-  deleteFilm,
-  getFilmInfo,
-  addFilm,
-} from "../../redux/reducers/films-reducer";
-import Card from "./../../components/Card";
+import AddForm from "../../components/AddForm/AddForm";
+import Container from "../../components/Container/Container";
+import Preloader from "../../components/Preloader/Preloader";
+import Card from "../../components/Card/Card";
 import PropTypes from "prop-types";
 import posters from "../../assets/images/posters/posters";
+import {
+  isFetchingFilmsSelector,
+  filmsSelector,
+  isFetchingFilmsInfoSelector,
+  errorsSelector,
+} from "./../../redux/reducers/films-reducer/films-selectors";
+import {
+  addFilm,
+  deleteFilm,
+  getFilms,
+  getFilmInfo,
+  deleteError,
+} from "./../../redux/reducers/films-reducer/films-actions";
+import Message from "../../components/Message/Message";
 
 const Films = ({
   films,
@@ -21,27 +29,33 @@ const Films = ({
   addFilm,
   getFilmInfo,
   isFetchingFilmsInfo,
+  errors,
+  deleteError,
 }) => {
   useEffect(() => {
     getFilms();
   }, []);
 
-  const filmsList = films.map((film) => (
-    <Card
-      image={posters[film.title] || posters.noImage}
-      key={film.title}
-      title={film.title}
-      description={{
-        director: film.director,
-        producer: film.producer,
-        date: film.edited && new Date(film.edited).toDateString(),
-      }}
-      url={film.url || null}
-      deleteFunc={deleteFilm}
-      getInfo={getFilmInfo}
-      isFetchingItemsInfo={isFetchingFilmsInfo}
-    />
-  ));
+  const filmsList = useMemo(
+    () =>
+      films.map((film) => (
+        <Card
+          image={posters[film.title] || posters.noImage}
+          key={film.title}
+          title={film.title}
+          description={{
+            director: film.director,
+            producer: film.producer,
+            date: film.edited && new Date(film.edited).toDateString(),
+          }}
+          url={film.url || null}
+          deleteFunc={deleteFilm}
+          getInfo={getFilmInfo}
+          isFetchingItemsInfo={isFetchingFilmsInfo}
+        />
+      )),
+    [films, isFetchingFilmsInfo]
+  );
 
   return (
     <Container>
@@ -49,8 +63,28 @@ const Films = ({
         <Preloader />
       ) : (
         <>
-          {films.length > 0 ? <h1>Films:</h1> : null}
-          {filmsList}
+          {errors.fetchingDataError ? (
+            <Message
+              error
+              closeFunc={() => {
+                deleteError("fetchingDataError");
+              }}
+              onButtonClick={() => {
+                deleteError("fetchingDataError");
+                getFilms();
+              }}
+              buttonText="Try again"
+            >
+              {errors.fetchingDataError}
+            </Message>
+          ) : (
+            films.length > 0 && (
+              <>
+                <h1>Films:</h1>
+                {filmsList}
+              </>
+            )
+          )}
           <AddForm
             addFunc={addFilm}
             title="film"
@@ -78,13 +112,15 @@ Films.propTypes = {
   getFilmInfo: PropTypes.func,
 };
 const mapStateToProps = (state) => ({
-  films: state.filmsPage.films,
-  isFetchingFilms: state.filmsPage.isFetchingFilms,
-  isFetchingFilmsInfo: state.filmsPage.isFetchingFilmsInfo,
+  films: filmsSelector(state),
+  isFetchingFilms: isFetchingFilmsSelector(state),
+  isFetchingFilmsInfo: isFetchingFilmsInfoSelector(state),
+  errors: errorsSelector(state),
 });
 export default connect(mapStateToProps, {
   getFilms,
   deleteFilm,
   addFilm,
   getFilmInfo,
+  deleteError,
 })(Films);

@@ -37,7 +37,6 @@ function cssLoaders(preProc) {
 
 module.exports = {
   context: path.resolve(__dirname, "src"),
-  watch: true,
   entry: { main: ["@babel/polyfill", "/index.js"] },
   output: {
     filename: filename("js"),
@@ -65,7 +64,7 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: [".js", ".jsx", ".css", ".jpg", ""],
+    extensions: [".js", ".jsx", ".css", ".jpg"],
     alias: {
       Src: path.resolve(__dirname, "src"),
     },
@@ -79,7 +78,17 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  targets: {
+                    node: "current",
+                  },
+                },
+              ],
+              "@babel/preset-react",
+            ],
           },
         },
       },

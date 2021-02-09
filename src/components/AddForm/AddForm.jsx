@@ -1,6 +1,6 @@
-import React from "react";
-import TextField from "./TextField";
-import Button from "./Button";
+import React, { useMemo } from "react";
+import TextField from "../TextField/TextField";
+import Button from "../Button/Button";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Field, Form } from "react-final-form";
@@ -20,19 +20,23 @@ const FormContainer = styled.form`
 const ButtonsContainer = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-around;
 `;
 
 const AddForm = React.memo(({ addFunc, title, fields }) => {
-  const inputs = fields.map((field) => (
-    <Field
-      key={field}
-      name={field}
-      render={({ input, meta }) => (
-        <TextField input={input} meta={meta} title={title} field={field} />
-      )}
-    />
-  ));
+  const inputs = useMemo(
+    () =>
+      fields.map((field) => (
+        <Field
+          key={field}
+          name={field}
+          render={({ input, meta }) => (
+            <TextField input={input} meta={meta} title={title} field={field} />
+          )}
+        />
+      )),
+    [[...fields]]
+  );
 
   return (
     <Form
@@ -62,7 +66,7 @@ const AddForm = React.memo(({ addFunc, title, fields }) => {
               <Button type="submit" disabled={pristine} green>
                 Add
               </Button>
-              <Button disabled={pristine} onClick={form.reset}>
+              <Button disabled={pristine} onClick={form.reset} red>
                 Reset
               </Button>
             </ButtonsContainer>
