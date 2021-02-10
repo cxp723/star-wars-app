@@ -1,5 +1,6 @@
 import {
   addFilm,
+  addFilmInfo,
   setFilms,
   setIsFetchingFilms,
   toggleFetchingFilmInfo,
@@ -16,7 +17,7 @@ beforeEach(() => {
         url: "https://swapi.dev/api/films/2/",
       },
       {
-        title: "A New HopeReturn of the Jedi",
+        title: "Return of the Jedi",
         url: "https://swapi.dev/api/films/3/",
       },
     ],
@@ -81,4 +82,17 @@ test("addFilm action pushes new film object to films array", () => {
   expect(newState.films[3].director).toEqual("Aleksandr Kirichenko");
 });
 
-/* test("addFilmInfo"); */
+test("addFilmInfo", () => {
+  let addFilmInfoAction = addFilmInfo({
+    item: {
+      title: "The Empire Strikes Back",
+      url: "http://swapi.dev/api/films/2/",
+      director: "Jorge Lucas",
+      producer: "Dean Martin",
+    },
+  });
+  let newState = filmsReducer(oldState, addFilmInfoAction);
+  expect(newState.films).toHaveLength(3);
+  expect(newState.films[1]).toHaveProperty("producer");
+  expect(newState.films[1].director).toEqual("Jorge Lucas");
+});
