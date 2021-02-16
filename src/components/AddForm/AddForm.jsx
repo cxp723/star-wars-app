@@ -22,7 +22,9 @@ const ButtonsContainer = styled.div`
   width: 100%;
   justify-content: space-around;
 `;
-
+const isSameProps = (prevProps, nextProps) => {
+  return prevProps.title === nextProps.title;
+};
 const AddForm = React.memo(({ addFunc, title, fields }) => {
   const inputs = useMemo(
     () =>
@@ -75,7 +77,7 @@ const AddForm = React.memo(({ addFunc, title, fields }) => {
       }}
     />
   );
-});
+}, isSameProps);
 
 AddForm.propTypes = {
   addFunc: PropTypes.func.isRequired,

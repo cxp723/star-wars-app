@@ -59,7 +59,7 @@ const Card = React.memo(
     );
 
     return (
-      <CardContainer>
+      <CardContainer data-testid="card">
         <CardImage src={image} />
         <CardDescription>
           <h2>{title}</h2>

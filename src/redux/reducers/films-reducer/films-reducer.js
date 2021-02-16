@@ -11,7 +11,7 @@ import {
 } from "./films-actions";
 
 //InitialState
-const initialState = {
+export const initialState = {
   films: [],
   isFetchingFilms: false,
   isFetchingFilmsInfo: [],

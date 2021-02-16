@@ -1,6 +1,9 @@
 import {
   addFilm,
   addFilmInfo,
+  deleteError,
+  deleteFilm,
+  setError,
   setFilms,
   setIsFetchingFilms,
   toggleFetchingFilmInfo,
@@ -41,7 +44,7 @@ test("fetching films sets correctly", () => {
 });
 
 test("toggle fetching film info pushes film title to fetching array and removes it", () => {
-  let toggleFetchingFilmInfoAction = toggleFetchingFilmInfo({
+  const toggleFetchingFilmInfoAction = toggleFetchingFilmInfo({
     title: "A New Hope",
   });
   let newState = filmsReducer(oldState, toggleFetchingFilmInfoAction);
@@ -72,18 +75,18 @@ test("setFilms action remakes films array", () => {
 });
 
 test("addFilm action pushes new film object to films array", () => {
-  let addFilmAction = addFilm({
+  const addFilmAction = addFilm({
     title: "Return of the Jedi",
     director: "Aleksandr Kirichenko",
     producer: "Aleksandr Kirichenko",
   });
-  let newState = filmsReducer(oldState, addFilmAction);
+  const newState = filmsReducer(oldState, addFilmAction);
   expect(newState.films).toHaveLength(4);
   expect(newState.films[3].director).toEqual("Aleksandr Kirichenko");
 });
 
 test("addFilmInfo", () => {
-  let addFilmInfoAction = addFilmInfo({
+  const addFilmInfoAction = addFilmInfo({
     item: {
       title: "The Empire Strikes Back",
       url: "http://swapi.dev/api/films/2/",
@@ -91,8 +94,27 @@ test("addFilmInfo", () => {
       producer: "Dean Martin",
     },
   });
-  let newState = filmsReducer(oldState, addFilmInfoAction);
+  const newState = filmsReducer(oldState, addFilmInfoAction);
   expect(newState.films).toHaveLength(3);
   expect(newState.films[1]).toHaveProperty("producer");
   expect(newState.films[1].director).toEqual("Jorge Lucas");
+});
+test("deleteFilm", () => {
+  const deleteFilmAction = deleteFilm({ title: "A New Hope" });
+  const newState = filmsReducer(oldState, deleteFilmAction);
+  expect(newState.films).toHaveLength(2);
+  expect(newState.films[0].title).toEqual("The Empire Strikes Back");
+});
+test("setError, delete error", () => {
+  const setErrorAction = setError({
+    fetchingDataError: "Couldn't fetch data from server",
+  });
+  let newState = filmsReducer(oldState, setErrorAction);
+  expect(newState.errors).toHaveProperty("fetchingDataError");
+  expect(newState.errors.fetchingDataError).toEqual(
+    "Couldn't fetch data from server"
+  );
+  const deleteErrorAction = deleteError("fetchingDataError");
+  newState = filmsReducer(oldState, deleteErrorAction);
+  expect(newState.errors.fetchingDataError).toBeUndefined();
 });

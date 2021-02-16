@@ -14,6 +14,7 @@ import planetsImages from "../../assets/images/planets/planets-images";
 import Paginator from "../../components/Paginator/Paginator";
 import QueryString from "qs";
 import { planetsStateSelector } from "./../../redux/reducers/planets-reducer/planets-selectors";
+import { withRouter } from "react-router";
 
 const Planets = (routerProps) => {
   const dispatch = useDispatch();
@@ -96,4 +97,4 @@ const Planets = (routerProps) => {
   );
 };
 
-export default Planets;
+export default withRouter(Planets);

@@ -8,7 +8,7 @@ import {
   deletePlanet,
 } from "./planets-actions";
 
-const initialState = {
+export const initialState = {
   pageSize: 10,
   planetsTotalCount: null,
   planets: [],
