@@ -1,11 +1,11 @@
-import React, { useMemo, useState } from "react";
-import Preloader from "../Preloader/Preloader";
-import PropTypes from "prop-types";
-import { useInfo } from "./getInfoHook";
-import DeleteIcon from "@material-ui/icons/Delete";
-import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
-import FavoriteOutlinedIcon from "@material-ui/icons/FavoriteOutlined";
-import ShareOutlinedIcon from "@material-ui/icons/ShareOutlined";
+import React, { useMemo, useState } from 'react';
+import Preloader from '../Preloader/Preloader';
+import PropTypes from 'prop-types';
+import useInfo from './getInfoHook';
+import DeleteIcon from '@material-ui/icons/Delete';
+import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutlined';
+import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
+import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 import {
   Card,
   CardActionArea,
@@ -15,28 +15,20 @@ import {
   Grid,
   makeStyles,
   Typography,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
 const useStyles = makeStyles({
   media: {
     height: 200,
   },
   actions: {
-    display: "flex",
-    justifyContent: "flex-end",
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
 });
 
 const CardMaterialUI = React.memo(
-  ({
-    image,
-    title,
-    url,
-    description,
-    deleteFunc,
-    isFetchingItemsInfo,
-    getInfo,
-  }) => {
+  ({ image, title, url, description, deleteFunc, isFetchingItemsInfo, getInfo }) => {
     const isFetched = !!url;
 
     useInfo(getInfo, isFetched, title, url);
@@ -49,11 +41,11 @@ const CardMaterialUI = React.memo(
       () =>
         Object.keys(description).map((item) => (
           <Typography component="p" key={item}>
-            {item[0].toUpperCase() + item.slice(1)}:{" "}
+            {item[0].toUpperCase() + item.slice(1)}:{' '}
             {isFetching ? <Preloader height="15" /> : description[item]}
           </Typography>
         )),
-      [{ ...description }]
+      [{ ...description }],
     );
 
     const classes = useStyles();
@@ -95,7 +87,7 @@ const CardMaterialUI = React.memo(
         </Card>
       </Grid>
     );
-  }
+  },
 );
 CardMaterialUI.propTypes = {
   image: PropTypes.string,

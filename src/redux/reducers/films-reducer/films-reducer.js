@@ -1,4 +1,4 @@
-import { handleActions } from "redux-actions";
+import { handleActions } from 'redux-actions';
 import {
   setFilms,
   setIsFetchingFilms,
@@ -8,9 +8,9 @@ import {
   deleteFilm,
   setError,
   deleteError,
-} from "./films-actions";
+} from './films-actions';
 
-//InitialState
+// InitialState
 export const initialState = {
   films: [],
   isFetchingFilms: false,
@@ -40,9 +40,7 @@ export const filmsReducer = handleActions(
     }),
     [addFilmInfo]: (state, { payload }) => ({
       ...state,
-      films: state.films.map((film) =>
-        film.title === payload.item.title ? payload.item : film
-      ),
+      films: state.films.map((film) => (film.title === payload.item.title ? payload.item : film)),
     }),
     [deleteFilm]: (state, { payload }) => ({
       ...state,
@@ -57,5 +55,5 @@ export const filmsReducer = handleActions(
       errors: { ...state.errors, [payload]: undefined },
     }),
   },
-  initialState
+  initialState,
 );

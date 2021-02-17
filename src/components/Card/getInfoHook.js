@@ -1,7 +1,9 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-export function useInfo(getInfoFunc, isFetched, title, url) {
+function useInfo(getInfoFunc, isFetched, title, url) {
   useEffect(() => {
     if (isFetched) getInfoFunc(title, url);
   }, []);
 }
+
+export default useInfo;

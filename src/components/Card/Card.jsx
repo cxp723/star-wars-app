@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import DeleteIcon from "../icons/DeleteIcon";
-import React, { useMemo } from "react";
-import Preloader from "../Preloader/Preloader";
-import PropTypes from "prop-types";
-import { useInfo } from "./getInfoHook";
+import styled from 'styled-components';
+import DeleteIcon from '../icons/DeleteIcon';
+import React, { useMemo } from 'react';
+import Preloader from '../Preloader/Preloader';
+import PropTypes from 'prop-types';
+import useInfo from './getInfoHook';
 
 const CardContainer = styled.div`
   margin: 15px;
@@ -33,15 +33,7 @@ const CardDescription = styled.div`
   align-self: flex-start;
 `;
 const Card = React.memo(
-  ({
-    image,
-    title,
-    url,
-    description,
-    deleteFunc,
-    isFetchingItemsInfo,
-    getInfo,
-  }) => {
+  ({ image, title, url, description, deleteFunc, isFetchingItemsInfo, getInfo }) => {
     const isFetchedFilm = !!url;
 
     useInfo(getInfo, isFetchedFilm, title, url);
@@ -51,11 +43,11 @@ const Card = React.memo(
       () =>
         Object.keys(description).map((item) => (
           <p key={item}>
-            {item[0].toUpperCase() + item.slice(1)}:{" "}
+            {item[0].toUpperCase() + item.slice(1)}:{' '}
             {isFetching ? <Preloader height="15" /> : description[item]}
           </p>
         )),
-      [{ ...description }]
+      [{ ...description }],
     );
 
     return (
@@ -72,7 +64,7 @@ const Card = React.memo(
         />
       </CardContainer>
     );
-  }
+  },
 );
 Card.propTypes = {
   image: PropTypes.string,

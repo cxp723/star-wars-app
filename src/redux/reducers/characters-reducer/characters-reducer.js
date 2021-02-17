@@ -1,4 +1,4 @@
-import { handleActions } from "redux-actions";
+import { handleActions } from 'redux-actions';
 import {
   setIsFetchingCharacters,
   toggleFetchingCharacterInfo,
@@ -6,7 +6,7 @@ import {
   addCharacter,
   addCharacterInfo,
   deleteCharacter,
-} from "./characters-actions";
+} from './characters-actions';
 
 export const initialState = {
   pageSize: 10,
@@ -42,16 +42,17 @@ export const charactersReducer = handleActions(
     }),
     [addCharacterInfo]: (state, { payload }) => ({
       ...state,
-      characters: state.characters.map((character) =>
-        character.name === payload.item.name ? payload.item : character
-      ),
+      characters: state.characters.map((character) => {
+        if (character.name === payload.item.name) {
+          return payload.item;
+        }
+        return character;
+      }),
     }),
     [deleteCharacter]: (state, { payload }) => ({
       ...state,
-      characters: state.characters.filter(
-        (character) => character.name !== payload.title
-      ),
+      characters: state.characters.filter((character) => character.name !== payload.title),
     }),
   },
-  initialState
+  initialState,
 );

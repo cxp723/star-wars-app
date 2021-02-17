@@ -1,4 +1,4 @@
-import { handleActions } from "redux-actions";
+import { handleActions } from 'redux-actions';
 import {
   setIsFetchingPlanets,
   toggleFetchingPlanetInfo,
@@ -6,7 +6,7 @@ import {
   addPlanet,
   addPlanetInfo,
   deletePlanet,
-} from "./planets-actions";
+} from './planets-actions';
 
 export const initialState = {
   pageSize: 10,
@@ -42,14 +42,17 @@ export const planetsReducer = handleActions(
     }),
     [addPlanetInfo]: (state, { payload }) => ({
       ...state,
-      planets: state.planets.map((planet) =>
-        planet.name === payload.item.name ? payload.item : planet
-      ),
+      planets: state.planets.map((planet) => {
+        if (planet.name === payload.item.name) {
+          return payload.item;
+        }
+        return planet;
+      }),
     }),
     [deletePlanet]: (state, { payload }) => ({
       ...state,
       planets: state.planets.filter((planet) => planet.name !== payload.title),
     }),
   },
-  initialState
+  initialState,
 );
