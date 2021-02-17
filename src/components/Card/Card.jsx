@@ -3,7 +3,6 @@ import DeleteIcon from '../icons/DeleteIcon';
 import React, { useMemo } from 'react';
 import Preloader from '../Preloader/Preloader';
 import PropTypes from 'prop-types';
-import useInfo from './getInfoHook';
 
 const CardContainer = styled.div`
   margin: 15px;
@@ -33,10 +32,10 @@ const CardDescription = styled.div`
   align-self: flex-start;
 `;
 const Card = React.memo(
-  ({ image, title, url, description, deleteFunc, isFetchingItemsInfo, getInfo }) => {
+  ({ image, title, url, description, deleteFunc, isFetchingItemsInfo, useInfo }) => {
     const isFetchedFilm = !!url;
 
-    useInfo(getInfo, isFetchedFilm, title, url);
+    useInfo(isFetchedFilm, title, url);
 
     const isFetching = isFetchingItemsInfo.includes(title);
     const info = useMemo(

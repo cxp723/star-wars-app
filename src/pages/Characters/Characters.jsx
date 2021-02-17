@@ -1,11 +1,9 @@
 import React, { useEffect, useMemo } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import AddForm from "../../components/AddForm/AddForm";
 import Preloader from "../../components/Preloader/Preloader";
 import {
   getCharacters,
   deleteCharacter,
-  getCharacterInfo,
   addCharacter,
 } from "../../redux/reducers/characters-reducer/characters-actions";
 import charactersImages from "../../assets/images/characters/characters-images";
@@ -17,6 +15,8 @@ import CardMaterialUI from "./../../components/Card/CardMaterialUI";
 import Container from "@material-ui/core/Container";
 import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import AddFormMaterialUI from "./../../components/AddForm/AddFormMaterialUI";
+import { useCharacterInfo } from "../../components/Card/getInfoHooks";
+import { useCallback } from "react";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -36,9 +36,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const fields = ["name", "gender", "height", "mass"];
+
 const Characters = (routerProps) => {
   const classes = useStyles();
-
   const dispatch = useDispatch();
   const {
     characters,
@@ -49,10 +50,12 @@ const Characters = (routerProps) => {
   } = useSelector(charactersStateSelector, shallowEqual);
 
   const deleteCharacterFunc = (name) => dispatch(deleteCharacter(name));
-  const getCharacterInfoFunc = (name, url) =>
-    dispatch(getCharacterInfo(name, url));
   const addCharacterFunc = (character) => dispatch(addCharacter(character));
   const getCharactersFunc = (page) => dispatch(getCharacters(page));
+
+  const addCharacterCallback = useCallback((character) => {
+    addCharacterFunc(character)
+  }, [])
 
   const currentPage = useMemo(
     () =>
@@ -94,7 +97,7 @@ const Characters = (routerProps) => {
           url={character.url || null}
           deleteFunc={deleteCharacterFunc}
           isFetchingItemsInfo={isFetchingCharactersInfo}
-          getInfo={getCharacterInfoFunc}
+          useInfo={useCharacterInfo}
         />
       )),
     [characters, isFetchingCharactersInfo]
@@ -127,9 +130,9 @@ const Characters = (routerProps) => {
               />
             )}
             <AddFormMaterialUI
-              addFunc={addCharacterFunc}
+              addFunc={addCharacterCallback}
               title="character"
-              fields={["name", "gender", "height", "mass"]}
+              fields={fields}
             />
           </>
         )}

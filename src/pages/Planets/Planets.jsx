@@ -6,7 +6,6 @@ import Preloader from "../../components/Preloader/Preloader";
 import {
   getPlanets,
   deletePlanet,
-  getPlanetInfo,
   addPlanet,
 } from "../../redux/reducers/planets-reducer/planets-actions";
 import Card from "../../components/Card/Card";
@@ -15,6 +14,10 @@ import Paginator from "../../components/Paginator/Paginator";
 import QueryString from "qs";
 import { planetsStateSelector } from "./../../redux/reducers/planets-reducer/planets-selectors";
 import { withRouter } from "react-router";
+import { usePlanetInfo } from "../../components/Card/getInfoHooks";
+import { useCallback } from "react";
+
+const fields = ["name", "diameter", "climate", "gravity"];
 
 const Planets = (routerProps) => {
   const dispatch = useDispatch();
@@ -26,7 +29,6 @@ const Planets = (routerProps) => {
     pageSize,
   } = useSelector(planetsStateSelector, shallowEqual);
   const deletePlanetFunc = (name) => dispatch(deletePlanet(name));
-  const getPlanetInfoFunc = (name, url) => dispatch(getPlanetInfo(name, url));
   const addPlanetFunc = (planet) => dispatch(addPlanet(planet));
   const getPlanetsFunc = (page) => dispatch(getPlanets(page));
 
@@ -37,9 +39,14 @@ const Planets = (routerProps) => {
       }).page?.toString(),
     [routerProps.location.search]
   );
+
   if (!currentPage) {
     routerProps.history.push("/planets?page=1");
   }
+
+  const addPlanetCallback = useCallback((planet) => {
+    addPlanetFunc(planet)
+  }, [])
 
   useEffect(() => {
     getPlanetsFunc(currentPage);
@@ -64,7 +71,7 @@ const Planets = (routerProps) => {
           url={planet.url || null}
           deleteFunc={deletePlanetFunc}
           isFetchingItemsInfo={isFetchingPlanetsInfo}
-          getInfo={getPlanetInfoFunc}
+          useInfo={usePlanetInfo}
         />
       )),
     [planets, isFetchingPlanetsInfo]
@@ -87,9 +94,9 @@ const Planets = (routerProps) => {
             />
           )}
           <AddForm
-            addFunc={addPlanetFunc}
+            addFunc={addPlanetCallback}
             title="planet"
-            fields={["name", "diameter", "climate", "gravity"]}
+            fields={fields}
           />
         </>
       )}

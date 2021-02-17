@@ -28,7 +28,7 @@ const Message = ({
 }) => (
   <MessageContainer {...restProps}>
     <MessageText>{children}</MessageText>
-    <Button onClick={onButtonClick}>{buttonText}</Button>
+    <Button onClick={onButtonClick} small>{buttonText}</Button>
     <CloseIcon closeFunc={closeFunc} />
   </MessageContainer>
 );

@@ -8,6 +8,7 @@ const Button = styled.button`
   font-size: 1.2em;
   padding: 10px;
   font-weight: bold;
+  ${(p) => p.small && 'max-width: 150px;'}
   cursor: pointer;
   flex: 1;
 `;

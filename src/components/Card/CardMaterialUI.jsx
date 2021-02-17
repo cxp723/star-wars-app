@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import Preloader from '../Preloader/Preloader';
 import PropTypes from 'prop-types';
-import useInfo from './getInfoHook';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutlined';
 import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
@@ -28,14 +27,18 @@ const useStyles = makeStyles({
 });
 
 const CardMaterialUI = React.memo(
-  ({ image, title, url, description, deleteFunc, isFetchingItemsInfo, getInfo }) => {
+  ({ image, title, url, description, deleteFunc, isFetchingItemsInfo, useInfo }) => {
     const isFetched = !!url;
 
-    useInfo(getInfo, isFetched, title, url);
+    useInfo(isFetched, title, url);
 
     const isFetching = isFetchingItemsInfo.includes(title);
 
     const [isLiked, setIsLiked] = useState(false);
+
+    const toggleLikeIcon = () => {
+      setIsLiked(!isLiked)
+    }
 
     const info = useMemo(
       () =>
@@ -72,13 +75,13 @@ const CardMaterialUI = React.memo(
             {isLiked ? (
               <FavoriteOutlinedIcon
                 color="secondary"
-                onClick={() => setIsLiked(false)}
+                onClick={toggleLikeIcon}
                 cursor="pointer"
               />
             ) : (
               <FavoriteBorderOutlinedIcon
                 color="secondary"
-                onClick={() => setIsLiked(true)}
+                onClick={toggleLikeIcon}
                 cursor="pointer"
               />
             )}

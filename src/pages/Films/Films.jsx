@@ -20,6 +20,10 @@ import {
   deleteError,
 } from "./../../redux/reducers/films-reducer/films-actions";
 import Message from "../../components/Message/Message";
+import { useFilmInfo } from "../../components/Card/getInfoHooks";
+import { useCallback } from "react";
+
+const fields = ["title", "director", "producer"];
 
 const Films = ({
   films,
@@ -27,7 +31,6 @@ const Films = ({
   isFetchingFilms,
   deleteFilm,
   addFilm,
-  getFilmInfo,
   isFetchingFilmsInfo,
   errors,
   deleteError,
@@ -50,12 +53,16 @@ const Films = ({
           }}
           url={film.url || null}
           deleteFunc={deleteFilm}
-          getInfo={getFilmInfo}
+          useInfo={useFilmInfo}
           isFetchingItemsInfo={isFetchingFilmsInfo}
         />
       )),
     [films, isFetchingFilmsInfo]
   );
+  
+  const addFilmCallback = useCallback((film) => {
+    addFilm(film)
+  }, [])
 
   return (
     <Container>
@@ -86,9 +93,9 @@ const Films = ({
             )
           )}
           <AddForm
-            addFunc={addFilm}
+            addFunc={addFilmCallback}
             title="film"
-            fields={["title", "director", "producer"]}
+            fields={fields}
           />
         </>
       )}

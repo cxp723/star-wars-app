@@ -28,7 +28,7 @@ const isSameProps = (prevProps, nextProps) => {
 };
 const AddFormMaterialUI = React.memo(({ addFunc, title, fields }) => {
   const classes = useStyles();
-
+  console.log('render')
   const inputs = useMemo(
     () =>
       fields.map((field) => (
