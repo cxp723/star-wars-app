@@ -11,7 +11,13 @@ export const getFilmInfoFromServer = async (filmUrl) =>
   axios.get(filmUrl).then((response) => response.data);
 
 export const getPlanetsFromServer = async (page) =>
-  apiInstance.get("planets/?page=" + page).then((response) => response.data);
+  apiInstance.get("planets?page=" + page).then((response) => response.data);
 
 export const getPlanetInfoFromServer = async (planetUrl) =>
   axios.get(planetUrl).then((response) => response.data);
+
+export const getCharactersFromServer = async (page) =>
+  apiInstance.get("people?page=" + page).then((response) => response.data);
+
+export const getCharacterInfoFromServer = async (characterUrl) =>
+  axios.get(characterUrl).then((response) => response.data);

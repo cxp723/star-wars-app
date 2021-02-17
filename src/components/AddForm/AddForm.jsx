@@ -20,7 +20,8 @@ const FormContainer = styled.form`
 const ButtonsContainer = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: space-between;
+  gap: 20px;
 `;
 const isSameProps = (prevProps, nextProps) => {
   return prevProps.title === nextProps.title;

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import AddForm from "../../components/AddForm/AddForm";
 import Container from "../../components/Container/Container";
 import Preloader from "../../components/Preloader/Preloader";
@@ -24,7 +24,7 @@ const Planets = (routerProps) => {
     isFetchingPlanetsInfo,
     planetsTotalCount,
     pageSize,
-  } = useSelector(planetsStateSelector);
+  } = useSelector(planetsStateSelector, shallowEqual);
   const deletePlanetFunc = (name) => dispatch(deletePlanet(name));
   const getPlanetInfoFunc = (name, url) => dispatch(getPlanetInfo(name, url));
   const addPlanetFunc = (planet) => dispatch(addPlanet(planet));

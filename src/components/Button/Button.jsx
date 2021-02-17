@@ -9,8 +9,8 @@ const Button = styled.button`
   font-size: 1.2em;
   padding: 10px;
   font-weight: bold;
-  min-width: 150px;
   cursor: pointer;
+  flex: 1;
 `;
 
 export default Button;

@@ -6,6 +6,9 @@ const Header = () => (
     <NavLink to="/films" activeClassName="active">
       Films
     </NavLink>
+    <NavLink to="/characters?page=1" activeClassName="active">
+      Characters
+    </NavLink>
     <NavLink to="/planets?page=1" activeClassName="active">
       Planets
     </NavLink>
