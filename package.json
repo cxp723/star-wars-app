@@ -19,13 +19,13 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
-    },
-    "lint-staged": {
-      "*.(js|jsx)": [
-        "npm run lint:write",
-        "git add"
-      ]
     }
+  },
+  "lint-staged": {
+    "*.(js|jsx)": [
+      "npm run lint:write",
+      "git add"
+    ]
   },
   "author": "cxp723",
   "license": "ISC",

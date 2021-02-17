@@ -4,23 +4,16 @@ import { getCharacterInfo } from '../../redux/reducers/characters-reducer/charac
 import { getFilmInfo } from '../../redux/reducers/films-reducer/films-actions';
 import { getPlanetInfo } from '../../redux/reducers/planets-reducer/planets-actions';
 
-export function useFilmInfo(isFetched, title, url) {
-  const dispatch = useDispatch()
+const useInfo = (getCallback, isFetched, title, url) => {
+  const dispatch = useDispatch();
   useEffect(() => {
-    if (isFetched) dispatch(getFilmInfo(title, url));
+    if (isFetched) dispatch(getCallback(title, url));
   }, []);
-}
+};
+export const useFilmInfo = (isFetched, title, url) => useInfo(getFilmInfo, isFetched, title, url);
 
-export function usePlanetInfo(isFetched, title, url) {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    if (isFetched) dispatch(getPlanetInfo(title, url));
-  }, []);
-}
+export const usePlanetInfo = (isFetched, title, url) =>
+  useInfo(getPlanetInfo, isFetched, title, url);
 
-export function useCharacterInfo(isFetched, title, url) {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    if (isFetched) dispatch(getCharacterInfo(title, url));
-  }, []);
-}
+export const useCharacterInfo = (isFetched, title, url) =>
+  useInfo(getCharacterInfo, isFetched, title, url);
