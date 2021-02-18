@@ -14,10 +14,15 @@ export const addPlanetInfo = createAction('PLANETS/ADD_INFO');
 
 export const deletePlanet = createAction('PLANETS/DELETE_PLANET');
 
+export const setError = createAction('PLANETS/SET_ERROR');
+
+export const deleteError = createAction('PLANETS/DELETE_ERROR');
+
 export const getPlanets = getItemsThunkCreator(
   getPlanetsFromServer,
   setPlanets,
   setIsFetchingPlanets,
+  setError,
 );
 
 export const getPlanetInfo = getItemInfoThunkCreator(

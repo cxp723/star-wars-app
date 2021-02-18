@@ -6,6 +6,8 @@ import {
   addCharacter,
   addCharacterInfo,
   deleteCharacter,
+  setError,
+  deleteError,
 } from './characters-actions';
 
 export const initialState = {
@@ -14,6 +16,7 @@ export const initialState = {
   characters: [],
   isFetchingCharacters: false,
   isFetchingCharactersInfo: [],
+  errors: {},
 };
 
 export const charactersReducer = handleActions(
@@ -52,6 +55,14 @@ export const charactersReducer = handleActions(
     [deleteCharacter]: (state, { payload }) => ({
       ...state,
       characters: state.characters.filter((character) => character.name !== payload.title),
+    }),
+    [setError]: (state, { payload }) => ({
+      ...state,
+      errors: { ...state.errors, ...payload },
+    }),
+    [deleteError]: (state, { payload }) => ({
+      ...state,
+      errors: { ...state.errors, [payload]: undefined },
     }),
   },
   initialState,

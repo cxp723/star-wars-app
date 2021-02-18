@@ -6,6 +6,8 @@ import {
   addPlanet,
   addPlanetInfo,
   deletePlanet,
+  setError,
+  deleteError,
 } from './planets-actions';
 
 export const initialState = {
@@ -14,6 +16,7 @@ export const initialState = {
   planets: [],
   isFetchingPlanets: false,
   isFetchingPlanetsInfo: [],
+  errors: {},
 };
 
 export const planetsReducer = handleActions(
@@ -52,6 +55,14 @@ export const planetsReducer = handleActions(
     [deletePlanet]: (state, { payload }) => ({
       ...state,
       planets: state.planets.filter((planet) => planet.name !== payload.title),
+    }),
+    [setError]: (state, { payload }) => ({
+      ...state,
+      errors: { ...state.errors, ...payload },
+    }),
+    [deleteError]: (state, { payload }) => ({
+      ...state,
+      errors: { ...state.errors, [payload]: undefined },
     }),
   },
   initialState,

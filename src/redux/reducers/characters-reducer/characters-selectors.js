@@ -1,13 +1,15 @@
-export const charactersSelector = (state) => state.charactersPage.characters;
-export const isFetchingCharactersSelector = (state) => state.charactersPage.isFetchingCharacters;
-export const isFetchingCharactersInfoSelector = (state) =>
-  state.charactersPage.isFetchingCharactersInfo;
-export const pageSizeSelector = (state) => state.charactersPage.pageSize;
-export const charactersTotalCountSelector = (state) => state.charactersPage.charactersTotalCount;
-export const charactersStateSelector = (state) => ({
+const charactersSelector = (state) => state.charactersPage.characters;
+const isFetchingCharactersSelector = (state) => state.charactersPage.isFetchingCharacters;
+const isFetchingCharactersInfoSelector = (state) => state.charactersPage.isFetchingCharactersInfo;
+const pageSizeSelector = (state) => state.charactersPage.pageSize;
+const charactersTotalCountSelector = (state) => state.charactersPage.charactersTotalCount;
+const errorsSelector = (state) => state.charactersPage.errors;
+
+export default (state) => ({
   characters: charactersSelector(state),
   isFetchingCharacters: isFetchingCharactersSelector(state),
   isFetchingCharactersInfo: isFetchingCharactersInfoSelector(state),
   pageSize: pageSizeSelector(state),
   charactersTotalCount: charactersTotalCountSelector(state),
+  errors: errorsSelector(state),
 });

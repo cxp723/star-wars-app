@@ -12,6 +12,7 @@ import {
   CardContent,
   CardMedia,
   Grid,
+  IconButton,
   makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -27,7 +28,7 @@ const useStyles = makeStyles({
 });
 
 const CardMaterialUI = React.memo(
-  ({ image, title, url, description, deleteFunc, isFetchingItemsInfo, useInfo }) => {
+  ({ image, title, url, description, deleteCallback, isFetchingItemsInfo, useInfo }) => {
     const isFetched = !!url;
 
     useInfo(isFetched, title, url);
@@ -37,8 +38,8 @@ const CardMaterialUI = React.memo(
     const [isLiked, setIsLiked] = useState(false);
 
     const toggleLikeIcon = () => {
-      setIsLiked(!isLiked)
-    }
+      setIsLiked(!isLiked);
+    };
 
     const info = useMemo(
       () =>
@@ -66,26 +67,24 @@ const CardMaterialUI = React.memo(
             </CardContent>
           </CardActionArea>
           <CardActions className={classes.actions}>
-            <DeleteIcon
+            <IconButton
+              aria-label="delete"
               onClick={() => {
-                deleteFunc({ title });
+                deleteCallback({ title });
               }}
-              cursor="pointer"
-            />
-            {isLiked ? (
-              <FavoriteOutlinedIcon
-                color="secondary"
-                onClick={toggleLikeIcon}
-                cursor="pointer"
-              />
-            ) : (
-              <FavoriteBorderOutlinedIcon
-                color="secondary"
-                onClick={toggleLikeIcon}
-                cursor="pointer"
-              />
-            )}
-            <ShareOutlinedIcon color="primary" cursor="pointer" />
+            >
+              <DeleteIcon />
+            </IconButton>
+            <IconButton aria-label="like" onClick={toggleLikeIcon}>
+              {isLiked ? (
+                <FavoriteOutlinedIcon color="secondary" />
+              ) : (
+                <FavoriteBorderOutlinedIcon color="secondary" />
+              )}
+            </IconButton>
+            <IconButton>
+              <ShareOutlinedIcon color="primary" />
+            </IconButton>
           </CardActions>
         </Card>
       </Grid>
