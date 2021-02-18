@@ -20,15 +20,6 @@ export const setError = createAction('CHARACTERS/SET_ERROR');
 
 export const deleteError = createAction('CHARACTERS/DELETE_ERROR');
 
-export const getCharacters = getItemsThunkCreator(
-  getCharactersFromServer,
-  setCharacters,
-  setIsFetchingCharacters,
-  setError,
-);
+export const getCharacters = createAction('CHARACTERS/GET_CHARACTERS');
 
-export const getCharacterInfo = getItemInfoThunkCreator(
-  getCharacterInfoFromServer,
-  addCharacterInfo,
-  toggleFetchingCharacterInfo,
-);
+export const getCharacterInfo = createAction('CHARACTERS/GET_CHARACTER_INFO');

@@ -1,25 +1,25 @@
-import React, { useMemo } from "react";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
-import DeleteIcon from "@material-ui/icons/Delete";
-import PropTypes from "prop-types";
-import { Field, Form } from "react-final-form";
-import { Box, Container, makeStyles, Typography } from "@material-ui/core";
+import React, { useMemo } from 'react';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
+import DeleteIcon from '@material-ui/icons/Delete';
+import PropTypes from 'prop-types';
+import { Field, Form } from 'react-final-form';
+import { Box, Container, makeStyles, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   buttonsContainer: {
-    display: "flex",
-    justifyContent: "space-around",
+    display: 'flex',
+    justifyContent: 'space-around',
     gap: theme.spacing(4),
     marginTop: theme.spacing(4),
   },
   button: {
-    flex: "1",
+    flex: '1',
   },
   formContainer: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
   },
 }));
 
@@ -28,7 +28,6 @@ const isSameProps = (prevProps, nextProps) => {
 };
 const AddFormMaterialUI = React.memo(({ addFunc, title, fields }) => {
   const classes = useStyles();
-  console.log('render')
   const inputs = useMemo(
     () =>
       fields.map((field) => (
@@ -45,7 +44,7 @@ const AddFormMaterialUI = React.memo(({ addFunc, title, fields }) => {
           )}
         />
       )),
-    [[...fields]]
+    [[...fields]],
   );
 
   return (
@@ -54,17 +53,17 @@ const AddFormMaterialUI = React.memo(({ addFunc, title, fields }) => {
       validate={(values) => {
         let errors = {};
         if (values.diameter && isNaN(Number(values.diameter))) {
-          errors.diameter = "Should be number";
+          errors.diameter = 'Should be number';
         }
         if (values.height && isNaN(Number(values.height))) {
-          errors.height = "Should be number";
+          errors.height = 'Should be number';
         }
         if (values.mass && isNaN(Number(values.mass))) {
-          errors.mass = "Should be number";
+          errors.mass = 'Should be number';
         }
         Object.keys(values).forEach((value) => {
           if (values[value].length < 3) {
-            errors[value] = "Should be at least 3 symbols";
+            errors[value] = 'Should be at least 3 symbols';
           }
         });
         return errors;

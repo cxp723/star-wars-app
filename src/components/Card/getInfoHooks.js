@@ -7,7 +7,7 @@ import { getPlanetInfo } from '../../redux/reducers/planets-reducer/planets-acti
 const useInfo = (getCallback, isFetched, title, url) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (isFetched) dispatch(getCallback(title, url));
+    if (isFetched) dispatch(getCallback({ title, url }));
   }, []);
 };
 export const useFilmInfo = (isFetched, title, url) => useInfo(getFilmInfo, isFetched, title, url);

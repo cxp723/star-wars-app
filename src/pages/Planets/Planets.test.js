@@ -2,7 +2,7 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { getPlanetsFromServer, getPlanetInfoFromServer } from '../../api/api';
 
-import { renderWithRedux } from '../../test-utils/test-utils';
+import { cleanup, renderWithRedux } from '../../test-utils/test-utils';
 import { initialState } from '../../redux/reducers/planets-reducer/planets-reducer';
 import Planets from './Planets';
 
@@ -52,6 +52,8 @@ beforeEach(() => {
   getPlanetsFromServer.mockReturnValue(Promise.resolve(successGetPlanetsResponse));
   getPlanetInfoFromServer.mockReturnValue(Promise.resolve(successGetPlanetInfoResponse));
 });
+
+afterEach(cleanup);
 
 describe('Planets component testing', () => {
   it('Preloader is showed while planets are fetching', () => {

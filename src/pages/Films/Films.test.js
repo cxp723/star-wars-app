@@ -2,7 +2,7 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import Films from './Films';
 import { getFilmsFromServer, getFilmInfoFromServer } from '../../api/api';
-import { renderWithRedux } from '../../test-utils/test-utils';
+import { cleanup, renderWithRedux } from '../../test-utils/test-utils';
 import { initialState } from '../../redux/reducers/films-reducer/films-reducer';
 import {
   successGetFilmInfoResponse,
@@ -16,6 +16,8 @@ beforeEach(() => {
   getFilmsFromServer.mockReturnValue(Promise.resolve(successGetFilmsResponse));
   getFilmInfoFromServer.mockReturnValue(Promise.resolve(successGetFilmInfoResponse));
 });
+
+afterEach(cleanup);
 
 describe('Films component testing', () => {
   it('Preloader is showed while films are fetching', () => {
