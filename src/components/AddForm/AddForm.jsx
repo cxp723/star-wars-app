@@ -1,9 +1,9 @@
-import React, { useMemo } from "react";
-import TextField from "../TextField/TextField";
-import Button from "../Button/Button";
-import styled from "styled-components";
-import PropTypes from "prop-types";
-import { Field, Form } from "react-final-form";
+import React, { useMemo } from 'react';
+import { Field, Form } from 'react-final-form';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import TextField from '../TextField/TextField';
+import Button from '../Button/Button';
 
 const FormContainer = styled.form`
   display: flex;
@@ -36,28 +36,28 @@ const AddForm = React.memo(({ addFunc, title, fields }) => {
           )}
         />
       )),
-    [[...fields]]
+    [[...fields]],
   );
 
   return (
     <Form
       onSubmit={addFunc}
       validate={(values) => {
-        let errors = {};
-        if (values.diameter && isNaN(Number(values.diameter))) {
-          errors.diameter = "Should be number";
+        const errors = {};
+        if (values.diameter && Number.isNaN(Number(values.diameter))) {
+          errors.diameter = 'Should be number';
         }
         Object.keys(values).forEach((value) => {
           if (values[value].length < 3) {
-            errors[value] = "Should be at least 3 symbols";
+            errors[value] = 'Should be at least 3 symbols';
           }
         });
         return errors;
       }}
-      render={({ handleSubmit, pristine, form }) => {
+      render={({ handleSubmit, pristine, form, invalid }) => {
         const submitFunc = (values) => {
           handleSubmit(values);
-          form.reset();
+          if (!invalid) form.reset();
         };
         return (
           <FormContainer onSubmit={submitFunc} rows={fields.length}>

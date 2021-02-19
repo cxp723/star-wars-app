@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useMemo } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -23,9 +24,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const isSameProps = (prevProps, nextProps) => {
-  return prevProps.title === nextProps.title;
-};
 const AddFormMaterialUI = React.memo(({ addFunc, title, fields }) => {
   const classes = useStyles();
   const inputs = useMemo(
@@ -51,14 +49,14 @@ const AddFormMaterialUI = React.memo(({ addFunc, title, fields }) => {
     <Form
       onSubmit={addFunc}
       validate={(values) => {
-        let errors = {};
-        if (values.diameter && isNaN(Number(values.diameter))) {
+        const errors = {};
+        if (values.diameter && Number.isNaN(Number(values.diameter))) {
           errors.diameter = 'Should be number';
         }
-        if (values.height && isNaN(Number(values.height))) {
+        if (values.height && Number.isNaN(Number(values.height))) {
           errors.height = 'Should be number';
         }
-        if (values.mass && isNaN(Number(values.mass))) {
+        if (values.mass && Number.isNaN(Number(values.mass))) {
           errors.mass = 'Should be number';
         }
         Object.keys(values).forEach((value) => {
@@ -68,10 +66,10 @@ const AddFormMaterialUI = React.memo(({ addFunc, title, fields }) => {
         });
         return errors;
       }}
-      render={({ handleSubmit, pristine, form }) => {
+      render={({ handleSubmit, pristine, form, invalid }) => {
         const submitFunc = (values) => {
           handleSubmit(values);
-          form.reset();
+          if (!invalid) form.reset();
         };
         return (
           <Container
@@ -111,7 +109,7 @@ const AddFormMaterialUI = React.memo(({ addFunc, title, fields }) => {
       }}
     />
   );
-}, isSameProps);
+});
 
 AddFormMaterialUI.propTypes = {
   addFunc: PropTypes.func.isRequired,

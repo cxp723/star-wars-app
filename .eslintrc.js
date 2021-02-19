@@ -4,7 +4,7 @@ module.exports = {
     browser: true,
     node: true,
   },
-  extends: ['airbnb', 'plugin:jest/recommended'],
+  extends: ['airbnb', 'plugin:jest/recommended', 'prettier'],
   plugins: ['babel', 'import', 'jsx-a11y', 'react', 'prettier'],
   parser: 'babel-eslint',
   parserOptions: {
@@ -15,13 +15,13 @@ module.exports = {
     },
   },
   rules: {
-    'max-len': ['error', 100, 2, { ignoreUrls: true }], // airbnb позволяет некоторые пограничные случаи
+    'max-len': ['error', 100, 2, { ignoreUrls: true }],
     'no-console': 'error', // airbnb использует предупреждение
     'no-alert': 'error', // airbnb использует предупреждение
 
     'react/require-default-props': 'off', // airbnb использует уведомление об ошибке
     'react/forbid-prop-types': 'off', // airbnb использует уведомление об ошибке
-    'react/jsx-filename-extension': ['error', { extensions: ['.js'] }], // airbnb использует .jsx
+    'react/jsx-filename-extension': ['error', { extensions: ['.jsx', '.js'] }],
 
     'prefer-destructuring': 'off',
 
@@ -38,6 +38,8 @@ module.exports = {
       },
     ], // для ошибки вложенных свойств htmlFor элементов label
 
-    'prettier/prettier': ['error'],
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
+
+    'linebreak-style': 0,
   },
 };

@@ -4,10 +4,10 @@ import { getCharacterInfo } from '../../redux/reducers/characters-reducer/charac
 import { getFilmInfo } from '../../redux/reducers/films-reducer/films-actions';
 import { getPlanetInfo } from '../../redux/reducers/planets-reducer/planets-actions';
 
-const useInfo = (getCallback, isFetched, title, url) => {
+const useInfo = (getInfoCallback, isFetched, title, url) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (isFetched) dispatch(getCallback({ title, url }));
+    if (isFetched) dispatch(getInfoCallback({ title, url }));
   }, []);
 };
 export const useFilmInfo = (isFetched, title, url) => useInfo(getFilmInfo, isFetched, title, url);

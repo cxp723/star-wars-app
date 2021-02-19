@@ -41,6 +41,7 @@ export const getItemInfoThunkCreator = (apiMethod, addMethod, toggleFetchingMeth
     const itemInfo = await apiMethod(url);
     dispatch(addMethod({ item: itemInfo }));
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.warn('Error on server: ', e);
   }
   dispatch(toggleFetchingMethod({ title }));

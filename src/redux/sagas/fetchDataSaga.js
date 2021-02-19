@@ -6,12 +6,7 @@ import {
   setError,
   toggleFetchingCharacterInfo,
   addCharacterInfo,
-} from './../reducers/characters-reducer/characters-actions';
-
-export function* sagaWatcher() {
-  yield takeEvery('CHARACTERS/GET_CHARACTERS', getCharacters);
-  yield takeEvery('CHARACTERS/GET_CHARACTER_INFO', getCharacterInfo);
-}
+} from '../reducers/characters-reducer/characters-actions';
 
 function* getCharacters({ payload }) {
   try {
@@ -43,7 +38,15 @@ function* getCharacterInfo(action) {
       }),
     );
   } catch (e) {
-    console.error('Error on server: ', e);
+    // eslint-disable-next-line no-console
+    console.warn('Error on server: ', e);
   }
   yield put(toggleFetchingCharacterInfo({ title }));
 }
+
+function* sagaWatcher() {
+  yield takeEvery('CHARACTERS/GET_CHARACTERS', getCharacters);
+  yield takeEvery('CHARACTERS/GET_CHARACTER_INFO', getCharacterInfo);
+}
+
+export default sagaWatcher;

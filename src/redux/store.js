@@ -1,10 +1,10 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
 import { filmsReducer } from './reducers/films-reducer/films-reducer';
 import { planetsReducer } from './reducers/planets-reducer/planets-reducer';
 import { charactersReducer } from './reducers/characters-reducer/characters-reducer';
-import createSagaMiddleware from 'redux-saga';
-import { sagaWatcher } from './sagas/fetchDataSaga';
+import sagaWatcher from './sagas/fetchDataSaga';
 
 const saga = createSagaMiddleware();
 

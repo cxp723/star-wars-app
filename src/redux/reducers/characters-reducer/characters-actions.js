@@ -1,6 +1,4 @@
 import { createAction } from 'redux-actions';
-import { getCharacterInfoFromServer, getCharactersFromServer } from '../../../api/api';
-import { getItemInfoThunkCreator, getItemsThunkCreator } from '../helpers/actionCreators';
 
 export const setIsFetchingCharacters = createAction('CHARACTERS/SET_IS_FETCHING');
 

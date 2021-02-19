@@ -46,7 +46,10 @@ test('getFilms thunk works correctly', async () => {
 });
 
 test('getFilmInfo Thunk works correctly', async () => {
-  const getFilmInfoThunk = getFilmInfo('A New Hope', 'http://swapi.dev/api/films/1/');
+  const getFilmInfoThunk = getFilmInfo({
+    title: 'A New Hope',
+    url: 'http://swapi.dev/api/films/1/',
+  });
   getFilmInfoFromServer.mockReturnValue(Promise.resolve(successGetFilmInfoResponse));
   await getFilmInfoThunk(dispatchMock, getStateMock, {});
   expect(dispatchMock).toBeCalledTimes(3);
